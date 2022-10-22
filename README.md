@@ -5,6 +5,7 @@ Integrante: Santiago Antón
 El objetivo del TP es crear un juego basado en Breakout, desarrollado por Atari y lanzado en 1976. 
 
 Gameplay (arcade): https://www.youtube.com/watch?v=UhAEjDKEHgk
+
 Gameplay (Atari 2600): https://www.youtube.com/watch?v=Cr6z3AyhRr8
 
 El juego consiste en lo siguiente:
