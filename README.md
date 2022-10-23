@@ -30,15 +30,7 @@ vez que un bloque es golpeado.
 no se generan más bloques y el jugador debe reiniciar el juego para seguir jugando. Esto también
 es modificable, para admitir mayor cantidad de pantallas.
 
-Los patrones de diseño a utilizar son:
-
-- State: este patrón resuelve el problema de la modificación de los bloques. Al ser destruido,
-el estado de un bloque pasa de "activo" a "destruido", por lo que su comportamiento es modificado,
-ya que debe desaparecer de la pantalla y evitar la colisión con la bola.
-
-- Singleton: el patrón se aplica para la paleta y la bola, ya que solo necesitamos una instancia
-de ellas. Cada vez que la bola toca la pared inferior habría que restar una vida y relocalizarla
-a su posición de lanzamiento, pero no destruirla y volverla a crear.
-
-- Observer: este patrón sirve para indicarle a todos los objetos Bloque que deben modificar su
-estado a "activo" cuando el jugador se queda sin vidas.
+El patrón de diseño a utilizar es Factory Method: este patrón permite crear diferentes tipos de
+objetos Bloque utilizando una clase FabricaDeBloques que se encarga de crearlos tras determinar
+su comportamiento por medio de la lectura de un archivo .CSV, como cantidad de golpes antes de
+ser destruido, el diseño del bloque y su ubicación.
