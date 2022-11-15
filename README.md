@@ -34,3 +34,19 @@ El patrón de diseño a utilizar es Factory Method: este patrón permite crear d
 objetos Bloque utilizando una clase FabricaDeBloques que se encarga de crearlos tras determinar
 su comportamiento por medio de la lectura de un archivo .CSV, como cantidad de golpes antes de
 ser destruido, el diseño del bloque y su ubicación.
+
+Instrucciones para configurar el entorno:
+
+El TP utiliza tanto JUnit como JavaFX. El archivo pom.xml contiene las dependencias necesarias
+para ejecutar el programa. Para Visual Studio Code las extensiones necesarias son:
+
+- Extension Pack for Java
+- JavaFX Support
+
+Instrucciones para ejecutar las pruebas:
+
+Las pruebas son customizables y no necesitan edición excepto para la prueba del lector CSV en
+la que es necesario especificar la ruta a la carpeta en la que se encuentran los niveles. Se
+ejecutan utilizando JUnit; para el ejemplo de Visual Studio Code se debe ingresar a la pestaña
+"pruebas" en el costado izquierdo y posteriormente seleccionar "ejecutar prueba" al elegir una
+prueba en particular o todas.
