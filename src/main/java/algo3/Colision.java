@@ -38,7 +38,6 @@ public class Colision {
                 // Impacta en la parte der
                 this.bola.modificarDireccion(1.0, -dirY); 
             }       
-
         } else if ((this.bola.posIzq() == posDerPal || this.bola.posDer() == posIzqPal)
             && posBola[1] >= posInfPal && posBola[1] <= posSupPal) {
             // Choque lateral
@@ -46,14 +45,13 @@ public class Colision {
         }
     }
 
-    public boolean contactoBolaBloque(Bloque bloque) {
-        int[] altoAncho = bloque.altoAncho();
+    public boolean contactoBolaBloque(int[] posicion, int[] altoAncho) {
         double[] posBola = this.bola.posicion(); // 0 = posX, 1 = posY
 
-        int posIzqBloque = bloque.posicion()[0] - altoAncho[1];
-        int posDerBloque = bloque.posicion()[0] + altoAncho[1];
-        int posSupBloque = bloque.posicion()[1] + altoAncho[0];
-        int posInfBloque = bloque.posicion()[1] - altoAncho[0];
+        int posIzqBloque = posicion[0] - altoAncho[1];
+        int posDerBloque = posicion[0] + altoAncho[1];
+        int posSupBloque = posicion[1] + altoAncho[0];
+        int posInfBloque = posicion[1] - altoAncho[0];
 
         // Todas las posibles combinaciones de colisión bola-bloque
         if ((this.bola.posSup() == posInfBloque || this.bola.posInf() == posSupBloque)
@@ -71,15 +69,22 @@ public class Colision {
     }
 
     public void colisionBolaBloque(FabricaDeBloques fabrica) {
-        ArrayList<Bloque> listaBloques = fabrica.listaBloques();
+        ArrayList<Object> listaBloques = fabrica.listaBloques();
+        
         if (listaBloques == null) {
             // No se creó el nivel o no hay bloques
             return;
         }
         for (int i = 0; i < listaBloques.size(); i++) {
-            Bloque bloque = listaBloques.get(i);
+            Object objBloque = listaBloques.get(i);
 
-            if (contactoBolaBloque(bloque)) {
+            if (objBloque.getClass() == Bloque.class) {
+                // El objeto golpeado es un bloque común
+                Bloque bloque = (Bloque)objBloque;
+
+                if (!contactoBolaBloque(bloque.posicion(), bloque.altoAncho())) {
+                    continue;
+                }    
                 bloque.golpear();
                 //breakout.subirPuntuacion(bloque.puntuacion());
 
@@ -87,6 +92,15 @@ public class Colision {
                     // El bloque fue destruido
                     listaBloques.remove(i);
                 }
+            } else if (objBloque.getClass() == BloqueInvisible.class) {
+                // El objeto golpeado es un bloque invisible
+                BloqueInvisible bloqueInv = (BloqueInvisible)objBloque;
+
+                if (!contactoBolaBloque(bloqueInv.posicion(), bloqueInv.altoAncho())){
+                    continue;
+                }
+                bloqueInv.golpear();
+                listaBloques.set(i, bloqueInv.reemplazarBloque());
             }
         }
     }

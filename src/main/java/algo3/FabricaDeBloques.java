@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class FabricaDeBloques {
-    private ArrayList<Bloque> bloques;
+    private ArrayList<Object> bloques;
     private ArrayList<String[]> datosBloques;
 
     public FabricaDeBloques(int nivel) throws IOException {
-        this.bloques = new ArrayList<Bloque>();
+        this.bloques = new ArrayList<Object>();
         this.datosBloques = new LectorCSV(nivel).leer();
     }
 
-    public ArrayList<Bloque> generarNivel() throws IOException {
+    public ArrayList<Object> generarNivel() throws IOException {
         for (int i = 0; i < this.datosBloques.size(); i++) {
             int posX = Integer.parseInt(this.datosBloques.get(i)[0]);
             int posY = Integer.parseInt(this.datosBloques.get(i)[1]);
@@ -20,7 +20,16 @@ public class FabricaDeBloques {
             int puntuacion = Integer.parseInt(this.datosBloques.get(i)[3]);
             String[] color = this.datosBloques.get(i)[4].split(":");
 
-            this.bloques.add(new Bloque(posX, posY, vida, puntuacion, convertirColorInt(color)));
+            switch (this.datosBloques.get(i)[5]) {
+                case "visible":
+                    Bloque bloque = new Bloque(posX, posY, vida, puntuacion, convertirColorInt(color));
+                    this.bloques.add(bloque);
+                    break;
+                case "invisible":
+                    BloqueInvisible bloqueInvisible = new BloqueInvisible(posX, posY, vida, puntuacion, convertirColorInt(color));
+                    this.bloques.add(bloqueInvisible);
+                    break;
+            }
         }
         return this.bloques;
     }
@@ -37,7 +46,7 @@ public class FabricaDeBloques {
         return this.bloques.size();
     }
 
-    public ArrayList<Bloque> listaBloques() {
+    public ArrayList<Object> listaBloques() {
         if (cantidadBloques() == 0) {
             return null;
         }
