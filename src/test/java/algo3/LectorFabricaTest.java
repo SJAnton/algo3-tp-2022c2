@@ -2,24 +2,13 @@ package algo3;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Test;
 
 public class LectorFabricaTest {
-    public final int NIVEL = 0;
-    public final String NOMBRE_ARCHIVO = "1.csv";
-    public final String DIRECTORIO = "C:\\Users\\usuario\\Desktop\\Algoritmos\\Algoritmos III\\breakout\\niveles";
-
-    @Test
-    public void pruebaLocalizarArchivo() throws FileNotFoundException {
-        // Prueba que el lector puede localizar la ruta al archivo automáticamente
-        LectorCSV lector = new LectorCSV(NIVEL);
-        assertEquals(lector.rutaDir(), DIRECTORIO);
-        assertEquals(lector.listaArchivos(DIRECTORIO)[0], NOMBRE_ARCHIVO);
-    }
+    public final int NIVEL = 1;
 
     @Test
     public void pruebaLeerLinea() throws IOException {
@@ -31,8 +20,9 @@ public class LectorFabricaTest {
         String vida = "1";
         String puntuacion = "10";
         String color = "255:255:0";
+        String visibilidad = "visible";
         
-        LectorCSV lector = new LectorCSV(NIVEL);        
+        LectorCSV lector = new LectorCSV(NIVEL);
         String[] primerLinea = lector.leer().get(numLinea);
 
         assertEquals(posX, primerLinea[0]);
@@ -40,19 +30,21 @@ public class LectorFabricaTest {
         assertEquals(vida, primerLinea[2]);
         assertEquals(puntuacion, primerLinea[3]);
         assertEquals(color, primerLinea[4]);
+        assertEquals(visibilidad, primerLinea[5]);
     }
 
     @Test
     public void pruebaBloquesArchivo() throws IOException {
         // Prueba que la fábrica genera correctamente los bloques del archivo
+        // Pre: el nivel cargado debe contener solamente objetos Bloque (visibles)
         LectorCSV lector = new LectorCSV(NIVEL);
-        ArrayList<Bloque> listaBloques = new FabricaDeBloques(NIVEL).generarNivel();
+        ArrayList<Object> listaBloques = new FabricaDeBloques(NIVEL).generarNivel();
         ArrayList<String[]> lineas = lector.leer();
 
-        assertEquals(listaBloques.size(), lineas.size());
+        assertEquals(lineas.size(), listaBloques.size());
 
         for (int i = 0; i < listaBloques.size(); i++) {
-            Bloque bloque = listaBloques.get(i);
+            Bloque bloque = (Bloque)listaBloques.get(i);
 
             int[] posBloque = bloque.posicion();
             String[] linea = lineas.get(i);

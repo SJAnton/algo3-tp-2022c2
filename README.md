@@ -45,8 +45,4 @@ para ejecutar el programa. Para Visual Studio Code las extensiones necesarias so
 
 Instrucciones para ejecutar las pruebas:
 
-Las pruebas son customizables y no necesitan edición excepto para la prueba del lector CSV en
-la que es necesario especificar la ruta a la carpeta en la que se encuentran los niveles. Se
-ejecutan utilizando JUnit; para el ejemplo de Visual Studio Code se debe ingresar a la pestaña
-"pruebas" en el costado izquierdo y posteriormente seleccionar "ejecutar prueba" al elegir una
-prueba en particular o todas.
+Las pruebas son personalizables y no necesitan edición para ser ejecutadas. Se ejecutan utilizando JUnit; para el ejemplo de Visual Studio Code se debe ingresar a la pestaña "pruebas" en el costado izquierdo y posteriormente seleccionar "ejecutar prueba" al elegir una prueba en particular o todas.

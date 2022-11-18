@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 public class ColisionBolaBloqueTest {
-    private final int NIVEL = 0;
     private final int RADIO = 5;
     private final int POS_X = 100;
     private final int POS_Y = 100;
@@ -35,7 +34,7 @@ public class ColisionBolaBloqueTest {
         while (bola.verDireccion()[1] > 0) {
             // Mueve la bola verticalmente hasta colisionar con el bloque
             bola.actualizarMovimiento();
-            colision.contactoBolaBloque(bloque);            
+            colision.contactoBolaBloque(bloque.posicion(), bloque.altoAncho());            
         }
         assertEquals(bola.verDireccion()[1], -dirY, 0.1); // cambia la dirección por la colisión
 
@@ -45,13 +44,15 @@ public class ColisionBolaBloqueTest {
     }
 
     @Test
-    public void pruebaColisionFabrica() throws IOException {
+    public void pruebaColisionVisiblesFabrica() throws IOException {
         // Prueba destruir a un bloque de la fábrica y verifica que se elimine
-        Bola bola = new Bola(POS_X, POS_Y, RADIO);
-        FabricaDeBloques fabrica = new FabricaDeBloques(NIVEL);
+        // Pre: el nivel cargado debe contener solamente objetos Bloque (visibles)
+        int nivel = 1;
+
+        FabricaDeBloques fabrica = new FabricaDeBloques(nivel);
         fabrica.generarNivel();
 
-        ArrayList<Bloque> listaBloques = fabrica.listaBloques();
+        ArrayList<Object> listaBloques = fabrica.listaBloques();
 
         double dirX = 0.0;
         double dirY = 1.0;
@@ -59,14 +60,12 @@ public class ColisionBolaBloqueTest {
         Bloque bloque = null;
         int menorDist = ALTO_PANTALLA;
 
-        bola.modificarDireccion(dirX, dirY);
-
-        assertEquals(bola.verDireccion()[1], dirY, 0.1);
-
         for (int i = 0; i < listaBloques.size(); i++) {
             // Busca el bloque a destruir más cercano verticalmente
-            int[] posBloque = listaBloques.get(i).posicion();
-            int anchoBloque = listaBloques.get(i).altoAncho()[1];
+            Bloque bloqueActual = (Bloque)listaBloques.get(i);
+
+            int[] posBloque = bloqueActual.posicion();
+            int anchoBloque = bloqueActual.altoAncho()[1];
 
             int bordeIzqBloque = posBloque[0] - (anchoBloque / 2);
             int bordeDerBloque = posBloque[0] + (anchoBloque / 2);
@@ -74,13 +73,17 @@ public class ColisionBolaBloqueTest {
             if (POS_X <= bordeDerBloque && POS_X >= bordeIzqBloque && posBloque[1] < menorDist) {
                 // Se encontró un bloque más cercano
                 menorDist = posBloque[1];
-                bloque = listaBloques.get(i);
+                bloque = bloqueActual;
             }
 
         }
-        assertNotEquals(bloque, null);
+        assertNotEquals(bloque, null); // Verifica que se encontró el bloque
 
+        Bola bola = new Bola(POS_X, POS_Y, RADIO);
         Colision colision = new Colision(bola);
+
+        bola.modificarDireccion(dirX, dirY);
+        assertEquals(bola.verDireccion()[1], dirY, 0.1);
 
         int posInfBloque = bloque.posicion()[1] - (bloque.altoAncho()[0] / 2);
         int tamInicialLista = listaBloques.size();
@@ -97,5 +100,59 @@ public class ColisionBolaBloqueTest {
             }
         }
         assertEquals(tamInicialLista - 1, listaBloques.size());
+    }
+
+    @Test
+    public void pruebaColisionBloqueInvisible() throws IOException {
+        // Prueba que el bloque invisible es reemplazado al ser golpeado
+        // Pre: el nivel cargado debe contener bloques invisibles
+        int nivel = 2;
+
+        FabricaDeBloques fabrica = new FabricaDeBloques(nivel);
+        fabrica.generarNivel();
+
+        ArrayList<Object> listaBloques = fabrica.listaBloques();
+
+        double dirX = 0.0;
+        double dirY = 1.0;
+
+        BloqueInvisible bloqueInv = null;
+        int menorDist = ALTO_PANTALLA;
+        int indiceMenorDist = 0;
+
+        for (int i = 0; i < listaBloques.size(); i++) {
+            // Busca el bloque invisible a destruir más cercano verticalmente
+            //Object objBloqueActual = listaBloques.get(i);
+
+            if (listaBloques.get(i).getClass() == Bloque.class) {
+                continue;
+            }
+            BloqueInvisible bloqueInvActual = (BloqueInvisible)listaBloques.get(i);
+
+            int[] posBloque = bloqueInvActual.posicion();
+            int anchoBloque = bloqueInvActual.altoAncho()[1];
+
+            int bordeIzqBloque = posBloque[0] - (anchoBloque / 2);
+            int bordeDerBloque = posBloque[0] + (anchoBloque / 2);
+
+            if (POS_X <= bordeDerBloque && POS_X >= bordeIzqBloque && posBloque[1] < menorDist) {
+                indiceMenorDist = i;
+                menorDist = posBloque[1];
+                bloqueInv = (BloqueInvisible)bloqueInvActual;
+            }
+        }
+        assertNotEquals(bloqueInv, null);
+
+        Bola bola = new Bola(POS_X, POS_Y, RADIO);
+        Colision colision = new Colision(bola);
+
+        bola.modificarDireccion(dirX, dirY);
+
+        while (bloqueInv.esInvisible()) {
+            bola.actualizarMovimiento();
+            colision.colisionBolaBloque(fabrica);
+        }
+        // Verifica que el objeto BloqueInvisible se convirtió en Bloque
+        assertEquals(Bloque.class, listaBloques.get(indiceMenorDist).getClass());        
     }
 }
