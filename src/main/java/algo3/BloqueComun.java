@@ -1,6 +1,6 @@
 package algo3;
 
-public class Bloque implements InterfazBloque {
+public class BloqueComun implements InterfazBloque {
     private final int posX;
     private final int posY;
 
@@ -13,7 +13,7 @@ public class Bloque implements InterfazBloque {
 
     private int vida;
 
-    public Bloque(int posX, int posY, int vida, int puntuacion, int[] color) {
+    public BloqueComun(int posX, int posY, int vida, int puntuacion, int[] color) {
         this.posX = posX;
         this.posY = posY;
         this.color = color;

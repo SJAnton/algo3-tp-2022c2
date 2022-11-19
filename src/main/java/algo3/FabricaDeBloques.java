@@ -22,7 +22,7 @@ public class FabricaDeBloques {
 
             switch (this.datosBloques.get(i)[5]) {
                 case "visible":
-                    Bloque bloque = new Bloque(posX, posY, vida, puntuacion, convertirColorInt(color));
+                    BloqueComun bloque = new BloqueComun(posX, posY, vida, puntuacion, convertirColorInt(color));
                     this.bloques.add(bloque);
                     break;
                 case "invisible":

@@ -42,13 +42,13 @@ public class BloqueInvisible implements InterfazBloque {
         return this.invisible;
     }
 
-    public Bloque reemplazarBloque() {
+    public BloqueComun reemplazarBloque() {
         /* Devuelve un bloque común con las mismas características
         para sustituir en la lista de bloques */
         if (this.esInvisible()) {
             return null;
         }
-        return new Bloque(this.posX, this.posY, this.vida, this.puntuacion, this.color);
+        return new BloqueComun(this.posX, this.posY, this.vida, this.puntuacion, this.color);
     }
 
     public int puntuacion() {

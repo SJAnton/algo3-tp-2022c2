@@ -78,9 +78,9 @@ public class Colision {
         for (int i = 0; i < listaBloques.size(); i++) {
             Object objBloque = listaBloques.get(i);
 
-            if (objBloque.getClass() == Bloque.class) {
+            if (objBloque.getClass() == BloqueComun.class) {
                 // El objeto golpeado es un bloque común
-                Bloque bloque = (Bloque)objBloque;
+                BloqueComun bloque = (BloqueComun)objBloque;
 
                 if (!contactoBolaBloque(bloque.posicion(), bloque.altoAncho())) {
                     continue;

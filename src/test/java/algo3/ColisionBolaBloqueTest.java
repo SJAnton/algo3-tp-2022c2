@@ -22,7 +22,7 @@ public class ColisionBolaBloqueTest {
         // Prueba que la bola rebota al colisionar con el bloque
         Bola bola = new Bola(POS_X, POS_Y, RADIO);
         Colision colision = new Colision(bola);
-        Bloque bloque = new Bloque(POS_X, POS_Y + DIST_BLOQUE_BOLA, VIDA_BLOQUE, PUNTUACION, null);
+        BloqueComun bloque = new BloqueComun(POS_X, POS_Y + DIST_BLOQUE_BOLA, VIDA_BLOQUE, PUNTUACION, null);
 
         double dirX = 0.0;
         double dirY = 1.0;
@@ -57,12 +57,12 @@ public class ColisionBolaBloqueTest {
         double dirX = 0.0;
         double dirY = 1.0;
 
-        Bloque bloque = null;
+        BloqueComun bloque = null;
         int menorDist = ALTO_PANTALLA;
 
         for (int i = 0; i < listaBloques.size(); i++) {
             // Busca el bloque a destruir más cercano verticalmente
-            Bloque bloqueActual = (Bloque)listaBloques.get(i);
+            BloqueComun bloqueActual = (BloqueComun)listaBloques.get(i);
 
             int[] posBloque = bloqueActual.posicion();
             int anchoBloque = bloqueActual.altoAncho()[1];
@@ -124,7 +124,7 @@ public class ColisionBolaBloqueTest {
             // Busca el bloque invisible a destruir más cercano verticalmente
             //Object objBloqueActual = listaBloques.get(i);
 
-            if (listaBloques.get(i).getClass() == Bloque.class) {
+            if (listaBloques.get(i).getClass() == BloqueComun.class) {
                 continue;
             }
             BloqueInvisible bloqueInvActual = (BloqueInvisible)listaBloques.get(i);
@@ -153,6 +153,6 @@ public class ColisionBolaBloqueTest {
             colision.colisionBolaBloque(fabrica);
         }
         // Verifica que el objeto BloqueInvisible se convirtió en Bloque
-        assertEquals(Bloque.class, listaBloques.get(indiceMenorDist).getClass());        
+        assertEquals(BloqueComun.class, listaBloques.get(indiceMenorDist).getClass());        
     }
 }
