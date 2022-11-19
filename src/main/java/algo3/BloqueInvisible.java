@@ -1,6 +1,6 @@
 package algo3;
 
-public class BloqueInvisible implements InterfazBloque {
+public class BloqueInvisible implements Bloque {
     private final int posX;
     private final int posY;
 

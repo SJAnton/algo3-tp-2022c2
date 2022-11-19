@@ -1,6 +1,6 @@
 package algo3;
 
-public interface InterfazBloque {    
+public interface Bloque {    
     public void golpear();
 
     public int[] posicion();

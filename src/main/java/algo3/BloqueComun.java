@@ -1,6 +1,6 @@
 package algo3;
 
-public class BloqueComun implements InterfazBloque {
+public class BloqueComun implements Bloque {
     private final int posX;
     private final int posY;
 
