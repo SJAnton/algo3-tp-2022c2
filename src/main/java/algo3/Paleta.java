@@ -34,6 +34,10 @@ public class Paleta {
         return this.posX;
     }
 
+    public int posY() {
+        return this.posY;
+    }
+
     public int bordeIzq() {
         return posX - (ANCHO / 2);
     }

@@ -26,7 +26,7 @@ public class ColisionBolaParedTest {
         while (bola.verDireccion()[0] <= 0) {
             // Prueba que la bola llega a la pared izq y rebota
             bola.actualizarMovimiento();
-            colision.colisionBolaPared(ALTO_PANTALLA, ANCHO_PANTALLA);
+            colision.colisionBolaPared(null, ALTO_PANTALLA, ANCHO_PANTALLA);
         }
         assertEquals(bola.verDireccion()[0], -dirX, 0.1);
         assertEquals(bola.verDireccion()[1], dirY, 0.1);
@@ -34,7 +34,7 @@ public class ColisionBolaParedTest {
         while (bola.verDireccion()[0] > 0) {
             // Prueba que la bola llega a la pared der y rebota
             bola.actualizarMovimiento();
-            colision.colisionBolaPared(ALTO_PANTALLA, ANCHO_PANTALLA);
+            colision.colisionBolaPared(null, ALTO_PANTALLA, ANCHO_PANTALLA);
         }
         assertEquals(bola.verDireccion()[0], dirX, 0.1);
         assertEquals(bola.verDireccion()[1], dirY, 0.1);
@@ -55,7 +55,7 @@ public class ColisionBolaParedTest {
         while (bola.verDireccion()[1] > 0) {
             // Prueba que la bola llega a la pared sup y rebota
             bola.actualizarMovimiento();
-            colision.colisionBolaPared(ALTO_PANTALLA, ANCHO_PANTALLA);
+            colision.colisionBolaPared(null, ALTO_PANTALLA, ANCHO_PANTALLA);
         }
         assertEquals(bola.verDireccion()[0], dirX, 0.1);
         assertEquals(bola.verDireccion()[1], -dirY, 0.1);

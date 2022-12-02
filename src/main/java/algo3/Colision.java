@@ -10,7 +10,6 @@ public class Colision {
     }
 
     public void colisionBolaPaleta(Paleta paleta) {
-        double[] posBola = this.bola.posicion();
         int[] posPaleta = paleta.posicion(); // 0 = posX, 1 = posY
         int[] dimPaleta = paleta.altoAncho(); // 0 = alto, 1 = ancho
    
@@ -19,35 +18,31 @@ public class Colision {
         int posSupPal = posPaleta[1] + (dimPaleta[0] / 2);
         int posInfPal = posPaleta[1] - (dimPaleta[0] / 2);
 
-        if (this.bola.posInf() == posSupPal && posBola[0] >= posIzqPal && posBola[0] <= posDerPal) {
+        if (this.bola.posInf() == posSupPal && this.bola.posX() >= posIzqPal && this.bola.posX() <= posDerPal) {
             // Choque en la parte superior
             // TODO: implementar mejor rebote
-            //double distanciaAlCentro = posBola[0] - posPaleta[0];
-            //double nuevaDirX = distanciaAlCentro / posDerPal;
             int parteIzqMitad = posPaleta[0] - (dimPaleta[1] / 5);
             int parteDerMitad = posPaleta[0] + (dimPaleta[1] / 5);
             double dirY = this.bola.verDireccion()[1];
 
-            if (posBola[0] >= parteIzqMitad && posBola[0] <= parteDerMitad) {
+            if (this.bola.posX() >= parteIzqMitad && this.bola.posX() <= parteDerMitad) {
                 // Impacta cerca de la mitad de la paleta
                 this.bola.modificarDireccion(0.0, -dirY); 
-            } else if (posBola[0] < parteIzqMitad) {
+            } else if (this.bola.posX() < parteIzqMitad) {
                 // Impacta en la parte izq
                 this.bola.modificarDireccion(-1.0, -dirY); 
-            } else if (posBola[0] > parteDerMitad) {
+            } else if (this.bola.posX() > parteDerMitad) {
                 // Impacta en la parte der
                 this.bola.modificarDireccion(1.0, -dirY); 
             }       
         } else if ((this.bola.posIzq() == posDerPal || this.bola.posDer() == posIzqPal)
-            && posBola[1] >= posInfPal && posBola[1] <= posSupPal) {
+            && this.bola.posY() >= posInfPal && this.bola.posY() <= posSupPal) {
             // Choque lateral
             this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
         }
     }
 
     public boolean contactoBolaBloque(int[] posicion, int[] altoAncho) {
-        double[] posBola = this.bola.posicion(); // 0 = posX, 1 = posY
-
         int posIzqBloque = posicion[0] - altoAncho[1];
         int posDerBloque = posicion[0] + altoAncho[1];
         int posSupBloque = posicion[1] + altoAncho[0];
@@ -55,12 +50,12 @@ public class Colision {
 
         // Todas las posibles combinaciones de colisión bola-bloque
         if ((this.bola.posSup() == posInfBloque || this.bola.posInf() == posSupBloque)
-            && posBola[0] > posIzqBloque && posBola[0] < posDerBloque) {
+            && this.bola.posX() > posIzqBloque && this.bola.posX() < posDerBloque) {
             // Choque en la parte superior / inferior
             this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);
             return true;
         } else if ((this.bola.posIzq() == posDerBloque || this.bola.posDer() == posIzqBloque)
-            && posBola[1] > posInfBloque && posBola[1] < posSupBloque) {
+            && this.bola.posY() > posInfBloque && this.bola.posY() < posSupBloque) {
             // Choque lateral
             this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
             return true;
@@ -68,7 +63,7 @@ public class Colision {
         return false;
     }
 
-    public void colisionBolaBloque(FabricaDeBloques fabrica) {
+    public void colisionBolaBloque(Breakout breakout, FabricaDeBloques fabrica) {
         ArrayList<Object> listaBloques = fabrica.listaBloques();
         
         if (listaBloques == null) {
@@ -86,11 +81,16 @@ public class Colision {
                     continue;
                 }    
                 bloque.golpear();
-                //breakout.subirPuntuacion(bloque.puntuacion());
 
                 if (!bloque.estado()) {
                     // El bloque fue destruido
                     listaBloques.remove(i);
+
+                    if (breakout == null) {
+                        // Breakout es null en las pruebas de colisiones
+                        return;
+                    }
+                    breakout.subirPuntuacion(bloque.puntuacion());
                 }
             } else if (objBloque.getClass() == BloqueInvisible.class) {
                 // El objeto golpeado es un bloque invisible
@@ -105,14 +105,11 @@ public class Colision {
         }
     }
 
-    public void colisionBolaPared(int paredSup, int paredDer) {
-        /* int[] paredSupDer = breakout.altoAncho(); // 0 = paredSup, 1 = paredDer
-      
-        if (this.posInfBola == 0) {
+    public void colisionBolaPared(Breakout breakout, int paredSup, int paredDer) {      
+        if (this.bola.posInf() == 0) {
             breakout.reducirVida();
             breakout.reiniciar();
-        } */
-        if (this.bola.posIzq() == 0.0 || this.bola.posDer() == paredDer) {
+        } else if (this.bola.posIzq() == 0.0 || this.bola.posDer() == paredDer) {
             this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
         } else if (this.bola.posSup() == paredSup) {
             this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);

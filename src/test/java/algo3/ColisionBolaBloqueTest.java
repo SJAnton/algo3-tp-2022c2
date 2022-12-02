@@ -91,7 +91,7 @@ public class ColisionBolaBloqueTest {
         while (bloque.estado()) {
             // Prueba golpear el bloque hasta que se destruya
             bola.actualizarMovimiento();
-            colision.colisionBolaBloque(fabrica);
+            colision.colisionBolaBloque(null, fabrica);
 
             if (bola.posSup() == posInfBloque && bloque.estado()) {
                 // Modifica la dirección para volver a golpear al bloque
@@ -150,7 +150,7 @@ public class ColisionBolaBloqueTest {
 
         while (bloqueInv.esInvisible()) {
             bola.actualizarMovimiento();
-            colision.colisionBolaBloque(fabrica);
+            colision.colisionBolaBloque(null, fabrica);
         }
         // Verifica que el objeto BloqueInvisible se convirtió en Bloque
         assertEquals(BloqueComun.class, listaBloques.get(indiceMenorDist).getClass());        

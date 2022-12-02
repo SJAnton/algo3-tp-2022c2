@@ -23,11 +23,6 @@ public class Bola {
         return this.direccion;
     }
 
-    public double[] posicion() {
-        // TODO: eliminar función
-        return new double[] {this.posX, this.posY};
-    }
-
     public double posX() {
         return this.posX;
     }

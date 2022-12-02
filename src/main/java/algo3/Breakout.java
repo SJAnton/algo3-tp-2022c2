@@ -11,6 +11,8 @@ public class Breakout {
     private final int DIST_BOLA_PALETA = 20;
     private final int POS_INI_Y = 20;
 
+    private final int DIST_TECHO_TABLERO = 20;
+
     private int vida;
     private int nivel;
     private int puntuacion;
@@ -18,6 +20,7 @@ public class Breakout {
 
     private final int altoPantalla;
     private final int anchoPantalla;
+    private final int paredSup;
     
     private Bola bola;
     private Paleta paleta;
@@ -26,11 +29,12 @@ public class Breakout {
     
     public Breakout(int altoPantalla, int anchoPantalla) throws IOException {
         this.vida = 3;
-        this.nivel = 0;
+        this.nivel = 1;
         this.puntuacion = 0;
 
         this.altoPantalla = altoPantalla;
         this.anchoPantalla = anchoPantalla;
+        this.paredSup = anchoPantalla - DIST_TECHO_TABLERO;
 
         this.posIniX = anchoPantalla / 2;
 
@@ -52,9 +56,9 @@ public class Breakout {
         while (juegoActivo()) {
             this.bola.actualizarMovimiento();
 
-            this.colision.colisionBolaBloque(this.fabricaDeBloques);
+            this.colision.colisionBolaBloque(this, this.fabricaDeBloques);
             this.colision.colisionBolaPaleta(this.paleta);
-            this.colision.colisionBolaPared(this.altoPantalla, this.anchoPantalla);
+            this.colision.colisionBolaPared(this, this.altoPantalla, this.paredSup);
         }
         if (this.fabricaDeBloques.cantidadBloques() == 0) {
             // Siguiente nivel
@@ -72,8 +76,12 @@ public class Breakout {
         this.puntuacion += puntos;
     }
 
-    public int[] altoAncho() {
-        return new int[] {this.altoPantalla, this.anchoPantalla}; 
+    public int alto() {
+        return this.altoPantalla;
+    }
+
+    public int ancho() {
+        return this.anchoPantalla;
     }
 
     public void reducirVida() {
