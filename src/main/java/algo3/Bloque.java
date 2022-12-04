@@ -3,9 +3,13 @@ package algo3;
 public interface Bloque {    
     public void golpear();
 
-    public int[] posicion();
+    public int posX();
 
-    public int[] altoAncho();
+    public int posY();
+
+    public int alto();
+
+    public int ancho();
 
     public int puntuacion();
 

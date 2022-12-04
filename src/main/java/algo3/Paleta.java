@@ -3,30 +3,33 @@ package algo3;
 public class Paleta {
     private int posX;
     private int posY;
+    private int velocidad;
     
     private final int ALTO = 10;
-    private final int ANCHO = 60;
+    private final int ANCHO = 80;
 
-    public Paleta(int posX, int posY) {
+    public Paleta(int posX, int posY, int velocidad) {
         this.posX = posX;
         this.posY = posY;
+        this.velocidad = velocidad;
     }
 
-    public int[] altoAncho() {
-        return new int[] {ALTO, ANCHO};
+    public void modificarPosicion(int posX, int posY) {
+        this.posX = posX;
+        this.posY = posY;
     }
 
     public void movIzq() {
         int paredIzq = 0;
         
-        if (bordeIzq() >= paredIzq) {
-            this.posX--;
+        if (bordeIzq() > paredIzq) {
+            this.posX -= this.velocidad;
         }
     }
 
     public void movDer(int paredDer) {
-        if (bordeDer() <= paredDer) {
-            this.posX++;
+        if (bordeDer() < paredDer) {
+            this.posX += this.velocidad;
         }
     }
 
@@ -46,12 +49,15 @@ public class Paleta {
         return posX + (ANCHO / 2);
     }
 
-    public int[] posicion()  {
-        return new int[] {this.posX, this.posY};
+    public int bordeSup() {
+        return posY - (ALTO / 2);
     }
 
-    public void modificarPosicion(int posX, int posY) {
-        this.posX = posX;
-        this.posY = posY;
+    public int alto() {
+        return ALTO;
+    }
+
+    public int ancho() {
+        return ANCHO;
     }
 }

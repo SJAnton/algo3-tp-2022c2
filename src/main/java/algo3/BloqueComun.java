@@ -8,7 +8,6 @@ public class BloqueComun implements Bloque {
     private final int ANCHO = 40;
     
     private final int puntuacion;
-    private final int[] posicion;
     private final int[] color;
 
     private int vida;
@@ -18,8 +17,6 @@ public class BloqueComun implements Bloque {
         this.posY = posY;
         this.color = color;
         this.puntuacion = puntuacion;
-        this.posicion = new int[] {this.posX, this.posY};
-
         this.vida = vida;
     }
 
@@ -30,16 +27,28 @@ public class BloqueComun implements Bloque {
         this.vida--;
     }
 
-    public int[] posicion() {
-        return this.posicion;
+    public int posX() {
+        return this.posX;
     }
 
-    public int[] altoAncho() {
-        return new int[] {ALTO, ANCHO}; 
+    public int posY() {
+        return this.posY;
+    }
+
+    public int alto() {
+        return ALTO;
+    }
+
+    public int ancho() {
+        return ANCHO;
     }
 
     public int puntuacion() {
         return this.puntuacion;
+    }
+
+    public int[] color() {
+        return this.color;
     }
 
     public boolean estado() {

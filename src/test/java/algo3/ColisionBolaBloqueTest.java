@@ -9,36 +9,38 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 public class ColisionBolaBloqueTest {
+    private final int ALTO_PANTALLA = 640;
+    
     private final int RADIO = 5;
     private final int POS_X = 100;
-    private final int POS_Y = 100;
+    private final int POS_Y = 300;
+    private final int VEL_BOLA = 1;
     private final int VIDA_BLOQUE = 3;
     private final int PUNTUACION = 10;
-    private final int ALTO_PANTALLA = 640;
     private final int DIST_BLOQUE_BOLA = 100;
 
     @Test
     public void pruebaColision() throws IOException {
         // Prueba que la bola rebota al colisionar con el bloque
-        Bola bola = new Bola(POS_X, POS_Y, RADIO);
+        Bola bola = new Bola(POS_X, POS_Y, RADIO, VEL_BOLA);
         Colision colision = new Colision(bola);
-        BloqueComun bloque = new BloqueComun(POS_X, POS_Y + DIST_BLOQUE_BOLA, VIDA_BLOQUE, PUNTUACION, null);
+        BloqueComun bloque = new BloqueComun(POS_X, POS_Y - DIST_BLOQUE_BOLA, VIDA_BLOQUE, PUNTUACION, null);
 
         double dirX = 0.0;
-        double dirY = 1.0;
+        double dirY = -1.0;
 
         bola.modificarDireccion(dirX, dirY);
 
         assertEquals(bola.verDireccion()[1], dirY, 0.1);
 
-        while (bola.verDireccion()[1] > 0) {
+        while (bola.verDireccion()[1] < 0) {
             // Mueve la bola verticalmente hasta colisionar con el bloque
             bola.actualizarMovimiento();
-            colision.contactoBolaBloque(bloque.posicion(), bloque.altoAncho());            
+            colision.contactoBolaBloque(bloque);    
         }
-        assertEquals(bola.verDireccion()[1], -dirY, 0.1); // cambia la dirección por la colisión
+        assertEquals(-dirY, bola.verDireccion()[1], 0.1); // cambia la dirección por la colisión
 
-        int posInfBloque = bloque.posicion()[1] - (bloque.altoAncho()[1] / 2);
+        int posInfBloque = bloque.posY() + (bloque.alto() / 2);
 
         assertEquals(bola.posSup(), posInfBloque, 0.1);
     }
@@ -55,37 +57,35 @@ public class ColisionBolaBloqueTest {
         ArrayList<Object> listaBloques = fabrica.listaBloques();
 
         double dirX = 0.0;
-        double dirY = 1.0;
+        double dirY = -1.0;
 
         BloqueComun bloque = null;
-        int menorDist = ALTO_PANTALLA;
+
+        int menorDist = 0;
 
         for (int i = 0; i < listaBloques.size(); i++) {
             // Busca el bloque a destruir más cercano verticalmente
             BloqueComun bloqueActual = (BloqueComun)listaBloques.get(i);
 
-            int[] posBloque = bloqueActual.posicion();
-            int anchoBloque = bloqueActual.altoAncho()[1];
+            int bordeIzqBloque = bloqueActual.posX() - (bloqueActual.ancho() / 2);
+            int bordeDerBloque = bloqueActual.posX() + (bloqueActual.ancho() / 2);
 
-            int bordeIzqBloque = posBloque[0] - (anchoBloque / 2);
-            int bordeDerBloque = posBloque[0] + (anchoBloque / 2);
-
-            if (POS_X <= bordeDerBloque && POS_X >= bordeIzqBloque && posBloque[1] < menorDist) {
+            if (POS_X <= bordeDerBloque && POS_X >= bordeIzqBloque && bloqueActual.posY() > menorDist) {
                 // Se encontró un bloque más cercano
-                menorDist = posBloque[1];
+                menorDist = bloqueActual.posY();
                 bloque = bloqueActual;
             }
 
         }
         assertNotEquals(bloque, null); // Verifica que se encontró el bloque
 
-        Bola bola = new Bola(POS_X, POS_Y, RADIO);
+        Bola bola = new Bola(POS_X, POS_Y, RADIO, VEL_BOLA);
         Colision colision = new Colision(bola);
 
         bola.modificarDireccion(dirX, dirY);
         assertEquals(bola.verDireccion()[1], dirY, 0.1);
 
-        int posInfBloque = bloque.posicion()[1] - (bloque.altoAncho()[0] / 2);
+        int posInfBloque = bloque.posY() + (bloque.alto() / 2);
         int tamInicialLista = listaBloques.size();
 
         while (bloque.estado()) {
@@ -122,28 +122,24 @@ public class ColisionBolaBloqueTest {
 
         for (int i = 0; i < listaBloques.size(); i++) {
             // Busca el bloque invisible a destruir más cercano verticalmente
-            //Object objBloqueActual = listaBloques.get(i);
 
             if (listaBloques.get(i).getClass() == BloqueComun.class) {
                 continue;
             }
             BloqueInvisible bloqueInvActual = (BloqueInvisible)listaBloques.get(i);
 
-            int[] posBloque = bloqueInvActual.posicion();
-            int anchoBloque = bloqueInvActual.altoAncho()[1];
+            int bordeIzqBloque = bloqueInvActual.posX() - (bloqueInvActual.ancho() / 2);
+            int bordeDerBloque = bloqueInvActual.posX() + (bloqueInvActual.ancho() / 2);
 
-            int bordeIzqBloque = posBloque[0] - (anchoBloque / 2);
-            int bordeDerBloque = posBloque[0] + (anchoBloque / 2);
-
-            if (POS_X <= bordeDerBloque && POS_X >= bordeIzqBloque && posBloque[1] < menorDist) {
+            if (POS_X <= bordeDerBloque && POS_X >= bordeIzqBloque && bloqueInvActual.posY() < menorDist) {
                 indiceMenorDist = i;
-                menorDist = posBloque[1];
+                menorDist = bloqueInvActual.posY();
                 bloqueInv = (BloqueInvisible)bloqueInvActual;
             }
         }
         assertNotEquals(bloqueInv, null);
 
-        Bola bola = new Bola(POS_X, POS_Y, RADIO);
+        Bola bola = new Bola(POS_X, POS_Y, RADIO, VEL_BOLA);
         Colision colision = new Colision(bola);
 
         bola.modificarDireccion(dirX, dirY);

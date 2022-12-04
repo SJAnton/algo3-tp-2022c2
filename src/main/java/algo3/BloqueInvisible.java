@@ -8,7 +8,6 @@ public class BloqueInvisible implements Bloque {
     private final int ANCHO = 40;
 
     private final int puntuacion;
-    private final int[] posicion;
     private final int[] color;
 
     private int vida;
@@ -19,7 +18,6 @@ public class BloqueInvisible implements Bloque {
         this.posY = posY;
         this.color = color;
         this.puntuacion = puntuacion;
-        this.posicion = new int[] {this.posX, this.posY};
 
         this.vida = vida;
         this.invisible = true;
@@ -28,18 +26,6 @@ public class BloqueInvisible implements Bloque {
     public void golpear() {
         // Golpear a un bloque invisible lo hace visible
         this.invisible = false;
-    }
-
-    public int[] posicion() {
-        return this.posicion;
-    }
-
-    public int[] altoAncho() {
-        return new int[] {ALTO, ANCHO}; 
-    }
-
-    public boolean esInvisible() {
-        return this.invisible;
     }
 
     public BloqueComun reemplazarBloque() {
@@ -51,8 +37,28 @@ public class BloqueInvisible implements Bloque {
         return new BloqueComun(this.posX, this.posY, this.vida, this.puntuacion, this.color);
     }
 
+    public int posX() {
+        return this.posX;
+    }
+
+    public int posY() {
+        return this.posY;
+    }
+
+    public int alto() {
+        return ALTO;
+    }
+
+    public int ancho() {
+        return ANCHO;
+    }
+
     public int puntuacion() {
         return this.puntuacion;
+    }
+
+    public boolean esInvisible() {
+        return this.invisible;
     }
 
     @Override

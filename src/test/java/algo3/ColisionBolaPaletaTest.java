@@ -13,9 +13,9 @@ public class ColisionBolaPaletaTest {
     @Test
     public void colisionMitad() {
         // Prueba colisionar en la parte media de la paleta
-        Bola bola = new Bola(POS_X, POS_Y, RADIO);
+        Bola bola = new Bola(POS_X, POS_Y, RADIO, 1);
         Colision colision = new Colision(bola);
-        Paleta paleta = new Paleta(POS_X, POS_Y - DIST_BOLA_PALETA);
+        Paleta paleta = new Paleta(POS_X, POS_Y - DIST_BOLA_PALETA, 0);
 
         double dirX = 0.0;
         double dirY = -1.0;
@@ -36,9 +36,9 @@ public class ColisionBolaPaletaTest {
         // Prueba colisionar en la parte izquierda de la paleta
         int distBolaPaletaX = 25;
 
-        Bola bola = new Bola(POS_X - distBolaPaletaX, POS_Y, RADIO);
+        Bola bola = new Bola(POS_X - distBolaPaletaX, POS_Y, RADIO, 1);
         Colision colision = new Colision(bola);
-        Paleta paleta = new Paleta(POS_X, POS_Y - DIST_BOLA_PALETA);
+        Paleta paleta = new Paleta(POS_X, POS_Y - DIST_BOLA_PALETA, 0);
 
         double dirX = 0.0;
         double dirY = -1.0;
@@ -57,7 +57,7 @@ public class ColisionBolaPaletaTest {
 
         // Prueba colisionar en la parte derecha de la paleta
 
-        Bola bola2 = new Bola(POS_X + distBolaPaletaX, POS_Y, RADIO);
+        Bola bola2 = new Bola(POS_X + distBolaPaletaX, POS_Y, RADIO, 1);
         Colision colision2 = new Colision(bola2);
 
         bola2.modificarDireccion(dirX, dirY);

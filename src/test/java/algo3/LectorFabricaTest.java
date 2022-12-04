@@ -16,7 +16,7 @@ public class LectorFabricaTest {
         int numLinea = 0;
 
         String posX = "20";
-        String posY = "600";
+        String posY = "60";
         String vida = "1";
         String puntuacion = "10";
         String color = "255:255:0";
@@ -46,15 +46,14 @@ public class LectorFabricaTest {
         for (int i = 0; i < listaBloques.size(); i++) {
             BloqueComun bloque = (BloqueComun)listaBloques.get(i);
 
-            int[] posBloque = bloque.posicion();
             String[] linea = lineas.get(i);
 
             int posX = Integer.parseInt(linea[0]);
             int posY = Integer.parseInt(linea[1]);
             int puntuacion = Integer.parseInt(linea[3]);
 
-            assertEquals(posX, posBloque[0]);
-            assertEquals(posY, posBloque[1]);
+            assertEquals(posX, bloque.posX());
+            assertEquals(posY, bloque.posY());
             assertEquals(true, bloque.estado());
             assertEquals(puntuacion, bloque.puntuacion());
         }

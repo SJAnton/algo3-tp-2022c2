@@ -7,12 +7,13 @@ import org.junit.Test;
 public class PaletaTest {
     private final int POS_X = 200;
     private final int POS_Y = 40;
+    private final int VEL_PALETA = 1;
 
     @Test
     public void pruebaMov() {
-        Paleta paleta = new Paleta(POS_X, POS_Y);
+        Paleta paleta = new Paleta(POS_X, POS_Y, VEL_PALETA);
 
-        int ancho = paleta.altoAncho()[1];
+        int ancho = paleta.ancho();
 
         while ((paleta.posX() - (ancho / 2)) != 0) {
             // El borde izq no toca la pared izq
