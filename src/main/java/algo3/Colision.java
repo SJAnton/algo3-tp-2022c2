@@ -7,8 +7,8 @@ public class Colision {
 
     private final int CANT_BLOQ_DEST_1 = 4;
     private final int CANT_BLOQ_DEST_2 = 12;
-    private final double MOD_VEL_1 = 1.2;
-    private final double MOD_VEL_2 = 1.5; 
+    private final double MOD_VEL_1 = 1.3;
+    private final double MOD_VEL_2 = 1.2; 
 
     private int cantBloqDestruidos;
 
@@ -20,13 +20,15 @@ public class Colision {
     }
 
     public void colisionBolaPaleta(Paleta paleta) {
+        // TODO: implementar golpe en la esquina
+
         int posIzqPal = paleta.posX() - (paleta.ancho() / 2);
         int posDerPal = paleta.posX() + (paleta.ancho() / 2);
         int posSupPal = paleta.posY() - (paleta.alto() / 2);
         int posInfPal = paleta.posY() + (paleta.alto() / 2);
 
-        if (this.bola.posInf() >= posSupPal && this.bola.posInf() <= paleta.posY()
-            && this.bola.posX() >= posIzqPal && this.bola.posX() <= posDerPal) {
+        if (this.bola.posInf() >= posSupPal && this.bola.posInf() <= paleta.posY() &&
+            this.bola.posX() >= posIzqPal && this.bola.posX() <= posDerPal) {
             // Choque en la parte superior
             // TODO: implementar mejor rebote
             int parteIzqMitad = paleta.posX() - (paleta.ancho() / 5);
@@ -42,7 +44,7 @@ public class Colision {
             } else if (this.bola.posX() > parteDerMitad) {
                 // Impacta en la parte der
                 this.bola.modificarDireccion(1.0, -dirY); 
-            }       
+            }
         } else if ((this.bola.posIzq() <= posDerPal || this.bola.posDer() >= posIzqPal)
             && this.bola.posY() >= posInfPal && this.bola.posY() <= posSupPal) {
             // Choque lateral
@@ -50,30 +52,13 @@ public class Colision {
         }
     }
 
-    /*
-    public boolean contactoBolaBloque(Bloque bloque) {
-        //TODO: implementar golpe en la esquina
-
-        int posIzqBloque = bloque.posX() - (bloque.ancho() / 2);
-        int posDerBloque = bloque.posX() + (bloque.ancho() / 2);
-        int posSupBloque = bloque.posY() - (bloque.alto() / 2);
-        int posInfBloque = bloque.posY() + (bloque.alto() / 2);
-        
-        // Todas las posibles combinaciones de colisión bola-bloque
-        if ((this.bola.posSup() == posInfBloque || this.bola.posInf() == posSupBloque)
-            && this.bola.posX() > posIzqBloque && this.bola.posX() < posDerBloque) {
-            // Choque en la parte superior / inferior
-            this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);
-            return true;
-        } else if ((this.bola.posIzq() == posDerBloque || this.bola.posDer() == posIzqBloque)
-            && this.bola.posY() > posInfBloque && this.bola.posY() < posSupBloque) {
-            // Choque lateral
-            this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
-            return true;
-        }
-        return false;
+    private boolean condColisionBloqSup(int posSupBloque, int posYBloque) {
+        return this.bola.posInf() >= posSupBloque && this.bola.posInf() <= posYBloque;
     }
-    */
+
+    private boolean condColisionBloqInf(int posInfBloque, int posYBloque) {
+        return this.bola.posSup() <= posInfBloque && this.bola.posSup() >= posYBloque;
+    }
 
     public boolean contactoBolaBloque(Bloque bloque) {
         //TODO: implementar golpe en la esquina
@@ -83,9 +68,9 @@ public class Colision {
         int posSupBloque = bloque.posY() - (bloque.alto() / 2);
         int posInfBloque = bloque.posY() + (bloque.alto() / 2);
         
-        // Todas las posibles combinaciones de colisión bola-bloque
-        if (((this.bola.posSup() <= posInfBloque && this.bola.posSup() >= bloque.posY()) ||
-            (this.bola.posInf() >= posSupBloque && this.bola.posInf() <= bloque.posY())) &&
+        // Todas las posibles combinaciones de colisión bola-bloque        
+        if ((condColisionBloqSup(posSupBloque, bloque.posY()) ||
+            condColisionBloqInf(posInfBloque, bloque.posY())) &&
             this.bola.posX() > posIzqBloque && this.bola.posX() < posDerBloque) {
             // Choque en la parte superior / inferior
             this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);

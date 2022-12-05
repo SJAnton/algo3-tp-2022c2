@@ -6,7 +6,7 @@ public class Paleta {
     private int velocidad;
     
     private final int ALTO = 10;
-    private final int ANCHO = 80;
+    private final int ANCHO = 100;
 
     public Paleta(int posX, int posY, int velocidad) {
         this.posX = posX;

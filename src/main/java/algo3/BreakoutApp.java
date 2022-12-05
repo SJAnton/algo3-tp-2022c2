@@ -6,9 +6,7 @@ import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.KeyEvent;
 import javafx.application.Application;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
@@ -45,9 +43,11 @@ public class BreakoutApp extends Application {
     public void actualizar(GraphicsContext gc, Scene escena) throws IOException {
         new AnimationTimer() {
             Breakout breakout = new Breakout(ALTO_PANTALLA, ANCHO_PANTALLA);
+            Controles controles = new Controles(escena, breakout);
             @Override
             public void handle(long now) {
-                controles(escena, breakout);
+                //controles(escena, breakout);
+                controles.controles();
                 try {
                     breakout.actualizar();
                 } catch (IOException e) {
@@ -111,28 +111,7 @@ public class BreakoutApp extends Application {
         gc.fillText("Puntos: %s".formatted(puntuacion), POS_X_PUNT, POS_Y_TABLERO);
     }
 
-    private void controles(Scene escena, Breakout breakout) {
-        //TODO: implementar pausa
-        escena.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent tecla) {
-                switch (tecla.getCode()) {
-                    case LEFT:
-                        breakout.paleta().movIzq();
-                        break;
-                    case RIGHT:
-                        breakout.paleta().movDer(ANCHO_PANTALLA);
-                        break;
-                    case R:
-                        breakout.reinciar();
-                        break;
-                    case SPACE:
-                        breakout.iniciarMovimientoBola();
-                        break;
-                    default:
-                        break;
-                } 
-            } 
-        });
+    public static void reproducirSonido() {
+        // TODO: implementar
     }
 }

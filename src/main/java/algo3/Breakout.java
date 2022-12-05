@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Breakout {
+    private final int VIDA_INI = 3;
+    private final int NIVEL_INI = 1;
+    private final int VEL_PALETA = 10;
+    private final int VEL_BOLA_INI = 3;
+
     private final int RADIO_BOLA = 5;
     private final int DIST_BOLA_PALETA = 20;
     private final int DIST_PISO_PALETA = 40;
-
-    private final int VIDA_INI = 3;
-    private final int NIVEL_INI = 1;
-    private final int VEL_PALETA = 20;
-    private final int VEL_BOLA_INI = 3;
 
     private int vida;
     private int nivel;
