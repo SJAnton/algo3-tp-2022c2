@@ -38,7 +38,7 @@ public class LectorFabricaTest {
         // Prueba que la fábrica genera correctamente los bloques del archivo
         // Pre: el nivel cargado debe contener solamente objetos Bloque (visibles)
         LectorCSV lector = new LectorCSV(NIVEL);
-        ArrayList<Object> listaBloques = new FabricaDeBloques(NIVEL).generarNivel();
+        ArrayList<Bloque> listaBloques = new FabricaDeBloques(NIVEL).generarNivel();
         ArrayList<String[]> lineas = lector.leer();
 
         assertEquals(lineas.size(), listaBloques.size());

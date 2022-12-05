@@ -13,10 +13,13 @@ public class Colision {
     private final int CANT_BLOQ_DEST_1 = 4;
     private final int CANT_BLOQ_DEST_2 = 12;
     private final int CANT_BLOQ_DEST_3 = 24;
+    private final int CANT_BLOQ_DEST_4 = 48;
+
     // Variación de la velocidad
     private final double MOD_VEL_1 = 1.3;
-    private final double MOD_VEL_2 = 1.2;
-    private final double MOD_VEL_3 = 1.3;
+    private final double MOD_VEL_2 = 1.3;
+    private final double MOD_VEL_3 = 1.5;
+    private final double MOD_VEL_4 = 1.8;
 
     private int cantBloqDestruidos;
 
@@ -28,80 +31,74 @@ public class Colision {
     }
 
     public void colisionBolaPaleta(Breakout breakout, Paleta paleta) {
-        // TODO: implementar golpe en la esquina
-
         int posIzqPal = paleta.posX() - (paleta.ancho() / 2);
         int posDerPal = paleta.posX() + (paleta.ancho() / 2);
         int posSupPal = paleta.posY() - (paleta.alto() / 2);
         int posInfPal = paleta.posY() + (paleta.alto() / 2);
 
-        if (this.bola.posInf() >= posSupPal && this.bola.posInf() <= paleta.posY() &&
-            this.bola.posX() >= posIzqPal && this.bola.posX() <= posDerPal) {
-            // Choque en la parte superior, la paleta es divida en cinco partes
-            int primerQuintoPal = quintaPartePaleta(1, posIzqPal, posDerPal);
-            int segundoQuintoPal = quintaPartePaleta(2, posIzqPal, posDerPal);
-            int tercerQuintoPal = quintaPartePaleta(3, posIzqPal, posDerPal);
-            int cuartoQuintoPal = quintaPartePaleta(4, posIzqPal, posDerPal);
-            int quintoQuintoPal = quintaPartePaleta(5, posIzqPal, posDerPal);
-            
-            double dirY = this.bola.verDireccion()[1];
+        double dirY = this.bola.verDireccion()[1];
 
-            if (this.bola.posX() < primerQuintoPal) {
-                this.bola.modificarDireccion(-REBOTE_ESQUINAS_PAL, -dirY);
-            } else if (this.bola.posX() < segundoQuintoPal && this.bola.posX() > primerQuintoPal) {
-                this.bola.modificarDireccion(-REBOTE_COSTADOS_PAL, -dirY);
-            } else if (this.bola.posX() < tercerQuintoPal && this.bola.posX() > segundoQuintoPal) {
-                // Impacta cerca de la mitad de la paleta
-                this.bola.modificarDireccion(REBOTE_MITAD_PAL, -dirY);
-            } else if (this.bola.posX() < cuartoQuintoPal && this.bola.posX() > tercerQuintoPal) {
-                this.bola.modificarDireccion(REBOTE_COSTADOS_PAL, -dirY);
-            } else if (this.bola.posX() < quintoQuintoPal && this.bola.posX() > cuartoQuintoPal) {
-                this.bola.modificarDireccion(REBOTE_ESQUINAS_PAL, -dirY);
-            }
-            BreakoutApp.reproducirSonido(breakout, "golpePaleta");
-
-        } else if ((this.bola.posIzq() <= posDerPal || this.bola.posDer() >= posIzqPal)
-            && this.bola.posY() >= posInfPal && this.bola.posY() <= posSupPal) {
+        if ((condColisionIzq(posDerPal, paleta.posX()) || condColisionDer(posIzqPal, paleta.posX())) &&
+            this.bola.posY() <= posInfPal && this.bola.posY() >= posSupPal) {
             // Choque lateral
-            this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
+
+            this.bola.modificarDireccion(-this.bola.verDireccion()[0], dirY);
             BreakoutApp.reproducirSonido(breakout, "golpePaleta");
+
+        } else if (condColisionSup(posSupPal, paleta.posY()) &&
+            this.bola.posX() >= posIzqPal && this.bola.posX() <= posDerPal) {
+            // Choque en la parte superior, la paleta es dividida en cinco partes
+        
+            choquesParteSupPal(posIzqPal, posDerPal, dirY);
+            BreakoutApp.reproducirSonido(breakout, "golpePaleta");   
+        }
+    }
+    
+    private void choquesParteSupPal(int posIzqPal, int posDerPal, double dirY) {
+        int primerQuintoPal = quintaPartePaleta(1, posIzqPal, posDerPal);
+        int segundoQuintoPal = quintaPartePaleta(2, posIzqPal, posDerPal);
+        int tercerQuintoPal = quintaPartePaleta(3, posIzqPal, posDerPal);
+        int cuartoQuintoPal = quintaPartePaleta(4, posIzqPal, posDerPal);
+        int quintoQuintoPal = quintaPartePaleta(5, posIzqPal, posDerPal);
+
+        if (this.bola.posX() <= primerQuintoPal) {
+            // Impacta cerca de la parte izquierda de la paleta
+            this.bola.modificarDireccion(-REBOTE_ESQUINAS_PAL, -dirY);
+        } else if (this.bola.posX() <= segundoQuintoPal && this.bola.posX() > primerQuintoPal) {
+            // Impacta entre la mitad y la parte izquierda
+            this.bola.modificarDireccion(-REBOTE_COSTADOS_PAL, -dirY);
+        } else if (this.bola.posX() <= tercerQuintoPal && this.bola.posX() > segundoQuintoPal) {
+            // Impacta cerca de la mitad de la paleta
+            this.bola.modificarDireccion(REBOTE_MITAD_PAL, -dirY);
+        } else if (this.bola.posX() <= cuartoQuintoPal && this.bola.posX() > tercerQuintoPal) {
+            // Impacta entre la mitad y la parte derecha
+            this.bola.modificarDireccion(REBOTE_COSTADOS_PAL, -dirY);
+        } else if (this.bola.posX() <= quintoQuintoPal && this.bola.posX() > cuartoQuintoPal) {
+            // Impacta cerca de la parte derecha
+            this.bola.modificarDireccion(REBOTE_ESQUINAS_PAL, -dirY);
         }
     }
 
-    private int quintaPartePaleta(int n, int posIzqPal, int posDerPal) {
-        int largoPaleta = posDerPal - posIzqPal;
-        return posIzqPal + ((largoPaleta) / 5) * n;
-    }
-
-    private boolean condColisionBloqSup(int posSupBloque, int posYBloque) {
-        return this.bola.posInf() >= posSupBloque && this.bola.posInf() <= posYBloque;
-    }
-
-    private boolean condColisionBloqInf(int posInfBloque, int posYBloque) {
-        return this.bola.posSup() <= posInfBloque && this.bola.posSup() >= posYBloque;
-    }
-
     public boolean contactoBolaBloque(Bloque bloque) {
-        //TODO: implementar golpe en la esquina
-
         int posIzqBloque = bloque.posX() - (bloque.ancho() / 2);
         int posDerBloque = bloque.posX() + (bloque.ancho() / 2);
         int posSupBloque = bloque.posY() - (bloque.alto() / 2);
         int posInfBloque = bloque.posY() + (bloque.alto() / 2);
         
-        // Todas las posibles combinaciones de colisión bola-bloque        
-        if ((condColisionBloqSup(posSupBloque, bloque.posY()) ||
-            condColisionBloqInf(posInfBloque, bloque.posY())) &&
-            this.bola.posX() > posIzqBloque && this.bola.posX() < posDerBloque) {
-            // Choque en la parte superior / inferior
-            this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);
-            return true;
-        } else if ((this.bola.posIzq() == posDerBloque || this.bola.posDer() == posIzqBloque)
-            && this.bola.posY() > posInfBloque && this.bola.posY() < posSupBloque) {
+        // Todas las posibles combinaciones de colisión bola-bloque
+        if ((condColisionIzq(posDerBloque, bloque.posX()) ||
+            condColisionDer(posIzqBloque, bloque.posX())) &&
+            this.bola.posY() <= posInfBloque && this.bola.posY() >= posSupBloque) {
             // Choque lateral
             this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
             return true;
-        }
+        } else if ((condColisionSup(posSupBloque, bloque.posY()) ||
+            condColisionInf(posInfBloque, bloque.posY())) &&
+            this.bola.posX() >= posIzqBloque && this.bola.posX() <= posDerBloque) {
+            // Choque en la parte superior / inferior
+            this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);
+            return true;  
+        } 
         return false;
     }
 
@@ -117,20 +114,22 @@ public class Colision {
             case CANT_BLOQ_DEST_3:
                 this.bola.modificarVelocidad(this.bola.velocidad() * MOD_VEL_3);
                 break;
+            case CANT_BLOQ_DEST_4:
+                this.bola.modificarVelocidad(this.bola.velocidad() * MOD_VEL_4);
             default:
                 break;
         }
     }
 
     public void colisionBolaBloque(Breakout breakout, FabricaDeBloques fabrica) {
-        ArrayList<Object> listaBloques = fabrica.listaBloques();
-        
+        ArrayList<Bloque> listaBloques = fabrica.listaBloques();
+
         if (listaBloques == null) {
             // No se creó el nivel o no hay bloques
             return;
         }
         for (int i = 0; i < listaBloques.size(); i++) {
-            Object objBloque = listaBloques.get(i);
+            Bloque objBloque = listaBloques.get(i);
 
             if (objBloque.getClass() == BloqueComun.class) {
                 // El objeto golpeado es un bloque común
@@ -147,12 +146,12 @@ public class Colision {
                     return;
                 }
                 listaBloques.remove(i);
-                this.cantBloqDestruidos++;
 
                 if (breakout == null) {
                     // Breakout es null en las pruebas de colisiones
                     return;
                 }
+                this.cantBloqDestruidos++;
                 this.cambiosVelocidad();
                 breakout.subirPuntuacion(bloque.puntuacion());
 
@@ -181,5 +180,30 @@ public class Colision {
             this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);
             BreakoutApp.reproducirSonido(breakout, "golpePared");
         }
+    }
+
+    public void reiniciarCantBloqDest() {
+        this.cantBloqDestruidos = 0;
+    }
+
+    private int quintaPartePaleta(int n, int posIzqPal, int posDerPal) {
+        int largoPaleta = posDerPal - posIzqPal;
+        return posIzqPal + ((largoPaleta) / 5) * n;
+    }
+
+    private boolean condColisionSup(int posSupObj, int posYObj) {
+        return this.bola.posInf() >= posSupObj && this.bola.posInf() <= posYObj;
+    }
+
+    private boolean condColisionInf(int posInfObj, int posYObj) {
+        return this.bola.posSup() <= posInfObj && this.bola.posSup() >= posYObj;
+    }
+
+    private boolean condColisionIzq(int posDerObj, int posXObj) {
+        return this.bola.posIzq() <= posDerObj && this.bola.posIzq() >= posXObj;
+    }
+
+    private boolean condColisionDer(int posIzqObj, int posXObj) {
+        return this.bola.posDer() >= posIzqObj && this.bola.posDer() <= posXObj;
     }
 }

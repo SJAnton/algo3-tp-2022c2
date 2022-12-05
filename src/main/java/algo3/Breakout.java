@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Breakout {
-    private final int CANT_NIVELES = 3; // cantidad de niveles en el directorio
+    private final int CANT_NIVELES = 4; // cantidad de niveles en el directorio
 
     private final int VIDA_INI = 3;
     private final int NIVEL_INI = 1;
@@ -94,6 +94,7 @@ public class Breakout {
     }
 
     public void reiniciarPosBola() {
+        this.colision.reiniciarCantBloqDest();
         this.bola.modificarDireccion(0.0, 0.0);
         this.bola.modificarVelocidad(VEL_BOLA_INI);
         this.bola.modificarPosicion(this.posIniX, this.posIniY - DIST_BOLA_PALETA);

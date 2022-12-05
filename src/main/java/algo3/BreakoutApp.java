@@ -21,7 +21,7 @@ public class BreakoutApp extends Application {
     private final int POS_X_PUNT = 380;
     private final int POS_Y_TABLERO = 20;
 
-    private static final boolean SONIDO_ACTIVO = true;
+    private static final boolean SONIDO_ACTIVO = false;
     private static final String RUTA_AUDIO_LANZ = "/audio/lanzamiento.mp3";
     private static final String RUTA_AUDIO_GOLPE_PAL = "/audio/golpepaleta.mp3";
     private static final String RUTA_AUDIO_GOLPE_BLOQ = "/audio/golpebloque.mp3";
@@ -65,7 +65,7 @@ public class BreakoutApp extends Application {
                 
                 dibujarPaleta(gc, breakout);  
                 dibujarBola(gc, breakout.bola());
-                if (breakout.juegoActivo()) {
+                if (breakout.fabrica().cantidadBloques() != 0) {
                     dibujarBloques(gc, breakout.fabrica());
                 }
             }
@@ -122,6 +122,7 @@ public class BreakoutApp extends Application {
 
     public static void reproducirSonido(Breakout breakout, String sonido) {
         if (!SONIDO_ACTIVO || breakout == null) {
+            // Breakout == null en las pruebas
             return;
         }
         Media archivo;

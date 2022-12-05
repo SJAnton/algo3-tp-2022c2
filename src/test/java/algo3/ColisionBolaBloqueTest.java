@@ -54,7 +54,7 @@ public class ColisionBolaBloqueTest {
         FabricaDeBloques fabrica = new FabricaDeBloques(nivel);
         fabrica.generarNivel();
 
-        ArrayList<Object> listaBloques = fabrica.listaBloques();
+        ArrayList<Bloque> listaBloques = fabrica.listaBloques();
 
         double dirX = 0.0;
         double dirY = -1.0;
@@ -111,7 +111,7 @@ public class ColisionBolaBloqueTest {
         FabricaDeBloques fabrica = new FabricaDeBloques(nivel);
         fabrica.generarNivel();
 
-        ArrayList<Object> listaBloques = fabrica.listaBloques();
+        ArrayList<Bloque> listaBloques = fabrica.listaBloques();
 
         double dirX = 0.0;
         double dirY = 1.0;

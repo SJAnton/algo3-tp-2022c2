@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class FabricaDeBloques {
-    private ArrayList<Object> bloques;
+    private ArrayList<Bloque> bloques;
     private ArrayList<String[]> datosBloques;
 
     public FabricaDeBloques(int nivel) throws IOException {
-        this.bloques = new ArrayList<Object>();
+        this.bloques = new ArrayList<Bloque>();
         this.datosBloques = new LectorCSV(nivel).leer();
     }
 
-    public ArrayList<Object> generarNivel() throws IOException {
+    public ArrayList<Bloque> generarNivel() throws IOException {
         for (int i = 0; i < this.datosBloques.size(); i++) {
             int posX = Integer.parseInt(this.datosBloques.get(i)[0]);
             int posY = Integer.parseInt(this.datosBloques.get(i)[1]);
@@ -46,7 +46,7 @@ public class FabricaDeBloques {
         return this.bloques.size();
     }
 
-    public ArrayList<Object> listaBloques() {
+    public ArrayList<Bloque> listaBloques() {
         if (cantidadBloques() == 0) {
             return null;
         }
