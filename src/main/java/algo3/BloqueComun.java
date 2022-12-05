@@ -21,7 +21,7 @@ public class BloqueComun implements Bloque {
     }
 
     public void golpear() {
-        if (this.vida == 0) {
+        if (this.vida <= 0) {
             return;
         }
         this.vida--;

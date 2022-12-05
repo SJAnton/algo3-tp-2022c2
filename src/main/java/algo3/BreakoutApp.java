@@ -54,7 +54,6 @@ public class BreakoutApp extends Application {
             Controles controles = new Controles(escena, breakout);
             @Override
             public void handle(long now) {
-                //controles(escena, breakout);
                 controles.controles();
                 try {
                     breakout.actualizar();
@@ -66,7 +65,9 @@ public class BreakoutApp extends Application {
                 
                 dibujarPaleta(gc, breakout);  
                 dibujarBola(gc, breakout.bola());
-                dibujarBloques(gc, breakout.fabrica());
+                if (breakout.juegoActivo()) {
+                    dibujarBloques(gc, breakout.fabrica());
+                }
             }
         }.start();
     }

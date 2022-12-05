@@ -5,10 +5,18 @@ import java.util.ArrayList;
 public class Colision {
     private final double POS_TECHO = 0.0;
 
+    private final double REBOTE_ESQUINAS_PAL = 1;
+    private final double REBOTE_COSTADOS_PAL = 0.5;
+    private final double REBOTE_MITAD_PAL = 0.0;
+
+    // Cantidad de bloques que deben ser destruidos para modificar la velocidad
     private final int CANT_BLOQ_DEST_1 = 4;
     private final int CANT_BLOQ_DEST_2 = 12;
+    private final int CANT_BLOQ_DEST_3 = 24;
+    // Variación de la velocidad
     private final double MOD_VEL_1 = 1.3;
-    private final double MOD_VEL_2 = 1.2; 
+    private final double MOD_VEL_2 = 1.2;
+    private final double MOD_VEL_3 = 1.3;
 
     private int cantBloqDestruidos;
 
@@ -29,29 +37,40 @@ public class Colision {
 
         if (this.bola.posInf() >= posSupPal && this.bola.posInf() <= paleta.posY() &&
             this.bola.posX() >= posIzqPal && this.bola.posX() <= posDerPal) {
-            // Choque en la parte superior
-            // TODO: implementar mejor rebote
-            int parteIzqMitad = paleta.posX() - (paleta.ancho() / 5);
-            int parteDerMitad = paleta.posX() + (paleta.ancho() / 5);
+            // Choque en la parte superior, la paleta es divida en cinco partes
+            int primerQuintoPal = quintaPartePaleta(1, posIzqPal, posDerPal);
+            int segundoQuintoPal = quintaPartePaleta(2, posIzqPal, posDerPal);
+            int tercerQuintoPal = quintaPartePaleta(3, posIzqPal, posDerPal);
+            int cuartoQuintoPal = quintaPartePaleta(4, posIzqPal, posDerPal);
+            int quintoQuintoPal = quintaPartePaleta(5, posIzqPal, posDerPal);
+            
             double dirY = this.bola.verDireccion()[1];
 
-            if (this.bola.posX() >= parteIzqMitad && this.bola.posX() <= parteDerMitad) {
+            if (this.bola.posX() < primerQuintoPal) {
+                this.bola.modificarDireccion(-REBOTE_ESQUINAS_PAL, -dirY);
+            } else if (this.bola.posX() < segundoQuintoPal && this.bola.posX() > primerQuintoPal) {
+                this.bola.modificarDireccion(-REBOTE_COSTADOS_PAL, -dirY);
+            } else if (this.bola.posX() < tercerQuintoPal && this.bola.posX() > segundoQuintoPal) {
                 // Impacta cerca de la mitad de la paleta
-                this.bola.modificarDireccion(0.0, -dirY); 
-            } else if (this.bola.posX() < parteIzqMitad) {
-                // Impacta en la parte izq
-                this.bola.modificarDireccion(-1.0, -dirY); 
-            } else if (this.bola.posX() > parteDerMitad) {
-                // Impacta en la parte der
-                this.bola.modificarDireccion(1.0, -dirY); 
+                this.bola.modificarDireccion(REBOTE_MITAD_PAL, -dirY);
+            } else if (this.bola.posX() < cuartoQuintoPal && this.bola.posX() > tercerQuintoPal) {
+                this.bola.modificarDireccion(REBOTE_COSTADOS_PAL, -dirY);
+            } else if (this.bola.posX() < quintoQuintoPal && this.bola.posX() > cuartoQuintoPal) {
+                this.bola.modificarDireccion(REBOTE_ESQUINAS_PAL, -dirY);
             }
             BreakoutApp.reproducirSonido(breakout, "golpePaleta");
+
         } else if ((this.bola.posIzq() <= posDerPal || this.bola.posDer() >= posIzqPal)
             && this.bola.posY() >= posInfPal && this.bola.posY() <= posSupPal) {
             // Choque lateral
             this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
             BreakoutApp.reproducirSonido(breakout, "golpePaleta");
         }
+    }
+
+    private int quintaPartePaleta(int n, int posIzqPal, int posDerPal) {
+        int largoPaleta = posDerPal - posIzqPal;
+        return posIzqPal + ((largoPaleta) / 5) * n;
     }
 
     private boolean condColisionBloqSup(int posSupBloque, int posYBloque) {
@@ -86,6 +105,23 @@ public class Colision {
         return false;
     }
 
+    private void cambiosVelocidad() {
+        switch (this.cantBloqDestruidos) {
+            // Casos en los que debe aumentar la velocidad de la bola
+            case CANT_BLOQ_DEST_1:
+                this.bola.modificarVelocidad(this.bola.velocidad() * MOD_VEL_1);
+                break;
+            case CANT_BLOQ_DEST_2:
+                this.bola.modificarVelocidad(this.bola.velocidad() * MOD_VEL_2);
+                break;
+            case CANT_BLOQ_DEST_3:
+                this.bola.modificarVelocidad(this.bola.velocidad() * MOD_VEL_3);
+                break;
+            default:
+                break;
+        }
+    }
+
     public void colisionBolaBloque(Breakout breakout, FabricaDeBloques fabrica) {
         ArrayList<Object> listaBloques = fabrica.listaBloques();
         
@@ -117,17 +153,7 @@ public class Colision {
                     // Breakout es null en las pruebas de colisiones
                     return;
                 }
-                switch (this.cantBloqDestruidos) {
-                    // Casos en los que debe aumentar la velocidad de la bola
-                    case CANT_BLOQ_DEST_1:
-                        this.bola.modificarVelocidad(this.bola.velocidad() * MOD_VEL_1);
-                        break;
-                    case CANT_BLOQ_DEST_2:
-                        this.bola.modificarVelocidad(this.bola.velocidad() * MOD_VEL_2);
-                        break;
-                    default:
-                        break;
-                }
+                this.cambiosVelocidad();
                 breakout.subirPuntuacion(bloque.puntuacion());
 
             } else if (objBloque.getClass() == BloqueInvisible.class) {
