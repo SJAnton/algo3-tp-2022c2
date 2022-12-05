@@ -54,7 +54,7 @@ public class Breakout {
         if (juegoActivo()) {
             this.bola.actualizarMovimiento();
 
-            this.colision.colisionBolaPaleta(this.paleta);
+            this.colision.colisionBolaPaleta(this, this.paleta);
             this.colision.colisionBolaBloque(this, this.fabricaDeBloques);
             this.colision.colisionBolaPared(this, this.altoPantalla, this.anchoPantalla);
         } else if (this.fabricaDeBloques.cantidadBloques() == 0) {
@@ -81,8 +81,13 @@ public class Breakout {
     }
 
     public void iniciarMovimientoBola() {
+        if (this.bola.verDireccion()[0] != 0.0 || this.bola.verDireccion()[1] != 0.0) {
+            // La bola ya está en movimiento
+            return;
+        }
         double random = (new Random().nextDouble() * 2) - 1; // - 1 <= random <= 1
         this.bola.modificarDireccion(random, -1.0);
+        BreakoutApp.reproducirSonido(this, "lanzamiento");
     }
 
     public void reiniciarPosBola() {

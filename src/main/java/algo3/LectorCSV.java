@@ -17,7 +17,7 @@ public class LectorCSV {
     private BufferedReader lector;
 
     public LectorCSV(int nivel) throws FileNotFoundException {
-        String ruta = Integer.toString(nivel) + ".csv";
+        String ruta = "niveles/" + Integer.toString(nivel) + ".csv";
         InputStream nombreNivel = getClass().getClassLoader().getResourceAsStream(ruta);
         
         this.bloques = new ArrayList<String[]>();

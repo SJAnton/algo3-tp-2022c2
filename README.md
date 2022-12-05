@@ -46,3 +46,8 @@ para ejecutar el programa. Para Visual Studio Code las extensiones necesarias so
 Instrucciones para ejecutar las pruebas:
 
 Las pruebas son personalizables y no necesitan edición para ser ejecutadas. Se ejecutan utilizando JUnit; para el ejemplo de Visual Studio Code se debe ingresar a la pestaña "pruebas" en el costado izquierdo y posteriormente seleccionar "ejecutar prueba" al elegir una prueba en particular o todas.
+
+Instrucciones para ejecutar el juego:
+
+La ubicación src/main contiene el archivo que debe compilarse y correrse para jugar, que es el archivo Main.java en java/algo3. Para Visual Studio Code la extensión utilizada para compilar es Debugger for Java, que está incluido en el Extension Pack. La carpeta resources tiene los recursos utilizados en la aplicación; el usuario puede crear sus propios niveles ubicándolos en su respectiva carpeta con un archivo con extensión .csv que sigue el siguiente patrón:
+Posición en X - posición en Y - vida - puntuación - color (RGB) - visibilidad.

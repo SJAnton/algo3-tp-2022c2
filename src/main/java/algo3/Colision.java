@@ -12,14 +12,14 @@ public class Colision {
 
     private int cantBloqDestruidos;
 
-    Bola bola;
+    private Bola bola;
 
     public Colision(Bola bola) {
         this.bola = bola;
         this.cantBloqDestruidos = 0;
     }
 
-    public void colisionBolaPaleta(Paleta paleta) {
+    public void colisionBolaPaleta(Breakout breakout, Paleta paleta) {
         // TODO: implementar golpe en la esquina
 
         int posIzqPal = paleta.posX() - (paleta.ancho() / 2);
@@ -45,10 +45,12 @@ public class Colision {
                 // Impacta en la parte der
                 this.bola.modificarDireccion(1.0, -dirY); 
             }
+            BreakoutApp.reproducirSonido(breakout, "golpePaleta");
         } else if ((this.bola.posIzq() <= posDerPal || this.bola.posDer() >= posIzqPal)
             && this.bola.posY() >= posInfPal && this.bola.posY() <= posSupPal) {
             // Choque lateral
             this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
+            BreakoutApp.reproducirSonido(breakout, "golpePaleta");
         }
     }
 
@@ -102,6 +104,7 @@ public class Colision {
                     continue;
                 }    
                 bloque.golpear();
+                BreakoutApp.reproducirSonido(breakout, "golpeBloque");
 
                 if (bloque.estado()) {
                     // El bloque no fue destruido
@@ -135,6 +138,7 @@ public class Colision {
                     continue;
                 }
                 bloqueInv.golpear();
+                BreakoutApp.reproducirSonido(breakout, "golpeBloque");
                 listaBloques.set(i, bloqueInv.reemplazarBloque());
             }
         }
@@ -146,8 +150,10 @@ public class Colision {
             breakout.reiniciarPosBola();
         } else if (this.bola.posIzq() <= 0.0 || this.bola.posDer() >= paredDer) {
             this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
+            BreakoutApp.reproducirSonido(breakout, "golpePared");
         } else if (this.bola.posSup() <= POS_TECHO) {
             this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);
+            BreakoutApp.reproducirSonido(breakout, "golpePared");
         }
     }
 }

@@ -6,18 +6,26 @@ import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.media.Media;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.media.MediaPlayer;
 import javafx.application.Application;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 
 public class BreakoutApp extends Application {            
-    private final static int ALTO_PANTALLA = 640;
-    private final static int ANCHO_PANTALLA = 480;
+    private final int ALTO_PANTALLA = 640;
+    private final int ANCHO_PANTALLA = 480;
     
     private final int POS_X_VIDA = 60;
     private final int POS_X_PUNT = 380;
     private final int POS_Y_TABLERO = 20;
+
+    private static final boolean SONIDO_ACTIVO = true;
+    private static final String RUTA_AUDIO_LANZ = "/audio/lanzamiento.mp3";
+    private static final String RUTA_AUDIO_GOLPE_PAL = "/audio/golpepaleta.mp3";
+    private static final String RUTA_AUDIO_GOLPE_BLOQ = "/audio/golpebloque.mp3";
+    private static final String RUTA_AUDIO_GOLPE_PAR = "/audio/golpepared.mp3";
 
     public static void main(String[] args) {
         Application.launch();
@@ -111,7 +119,29 @@ public class BreakoutApp extends Application {
         gc.fillText("Puntos: %s".formatted(puntuacion), POS_X_PUNT, POS_Y_TABLERO);
     }
 
-    public static void reproducirSonido() {
-        // TODO: implementar
+    public static void reproducirSonido(Breakout breakout, String sonido) {
+        if (!SONIDO_ACTIVO || breakout == null) {
+            return;
+        }
+        Media archivo;
+
+        switch (sonido) {
+            case "lanzamiento":
+                archivo = new Media(Main.class.getResource(RUTA_AUDIO_LANZ).toExternalForm());
+                break;
+            case "golpePaleta":
+                archivo = new Media(Main.class.getResource(RUTA_AUDIO_GOLPE_PAL).toExternalForm());
+                break;
+            case "golpeBloque":
+                archivo = new Media(Main.class.getResource(RUTA_AUDIO_GOLPE_BLOQ).toExternalForm());
+                break;
+            case "golpePared":
+                archivo = new Media(Main.class.getResource(RUTA_AUDIO_GOLPE_PAR).toExternalForm());
+                break;
+            default:
+                return;
+        }
+        MediaPlayer mediaPlayer = new MediaPlayer(archivo);
+        mediaPlayer.play();
     }
 }

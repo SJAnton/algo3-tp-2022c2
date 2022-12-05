@@ -25,7 +25,7 @@ public class ColisionBolaPaletaTest {
         while (bola.verDireccion()[1] < 0) {
             // La bola baja hasta colisionar con la paleta
             bola.actualizarMovimiento();
-            colision.colisionBolaPaleta(paleta);
+            colision.colisionBolaPaleta(null, paleta);
         }
         assertEquals(dirX, bola.verDireccion()[0], 0.1);
         assertEquals(-dirY, bola.verDireccion()[1], 0.1);
@@ -48,7 +48,7 @@ public class ColisionBolaPaletaTest {
         while (bola.verDireccion()[1] < 0) {
             // La bola baja hasta colisionar con la paleta
             bola.actualizarMovimiento();
-            colision.colisionBolaPaleta(paleta);
+            colision.colisionBolaPaleta(null, paleta);
         }
         double dirXRebote = -1.0;
 
@@ -64,7 +64,7 @@ public class ColisionBolaPaletaTest {
 
         while (bola2.verDireccion()[1] < 0) {
             bola2.actualizarMovimiento();
-            colision2.colisionBolaPaleta(paleta);
+            colision2.colisionBolaPaleta(null, paleta);
         }
         dirXRebote = 1.0;
 
