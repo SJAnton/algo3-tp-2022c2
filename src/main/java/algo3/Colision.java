@@ -15,11 +15,12 @@ public class Colision {
     private final int CANT_BLOQ_DEST_3 = 24;
     private final int CANT_BLOQ_DEST_4 = 48;
 
-    // Variación de la velocidad
-    private final double MOD_VEL_1 = 1.3;
-    private final double MOD_VEL_2 = 1.3;
-    private final double MOD_VEL_3 = 1.5;
-    private final double MOD_VEL_4 = 1.8;
+    // Variación de la velocidad (el total no debe ser mucho mayor a 7 para
+    // no generar fallos en la detección de colisiones por la velocidad)
+    private final double MOD_VEL_1 = 1.4;
+    private final double MOD_VEL_2 = 1.2;
+    private final double MOD_VEL_3 = 1.2;
+    private final double MOD_VEL_4 = 1.2;
 
     private int cantBloqDestruidos;
 
@@ -36,15 +37,25 @@ public class Colision {
         int posSupPal = paleta.posY() - (paleta.alto() / 2);
         int posInfPal = paleta.posY() + (paleta.alto() / 2);
 
+        double dirX = this.bola.verDireccion()[0];
         double dirY = this.bola.verDireccion()[1];
 
-        if ((condColisionIzq(posDerPal, paleta.posX()) || condColisionDer(posIzqPal, paleta.posX())) &&
-            this.bola.posY() <= posInfPal && this.bola.posY() >= posSupPal) {
-            // Choque lateral
-
-            this.bola.modificarDireccion(-this.bola.verDireccion()[0], dirY);
-            BreakoutApp.reproducirSonido(breakout, "golpePaleta");
-
+        if (this.bola.posY() <= posInfPal && this.bola.posY() >= posSupPal && dirX == 0.0) {
+            // Choque en los costados de la paleta
+            if (condColisionIzq(posDerPal, paleta.posX())) {
+                // Caso en el que la bola se mueve verticalmente e impacta a la derecha
+                this.bola.modificarDireccion(REBOTE_ESQUINAS_PAL, dirY); 
+            } else if (condColisionDer(posIzqPal, paleta.posX())) {
+                // Caso en el que la bola se mueve verticalmente e impacta a la izquierda
+                this.bola.modificarDireccion(-REBOTE_ESQUINAS_PAL, dirY);
+            } 
+            
+        else if ((condColisionIzq(posDerPal, paleta.posX()) ||
+            condColisionDer(posIzqPal, paleta.posX())) &&
+            this.bola.posY() <= posInfPal &&this.bola.posY() >= posSupPal) {
+                // Caso en el que la bola no se mueve verticalmente
+                this.bola.modificarDireccion(-dirX, dirY);
+            }
         } else if (condColisionSup(posSupPal, paleta.posY()) &&
             this.bola.posX() >= posIzqPal && this.bola.posX() <= posDerPal) {
             // Choque en la parte superior, la paleta es dividida en cinco partes
@@ -84,13 +95,18 @@ public class Colision {
         int posDerBloque = bloque.posX() + (bloque.ancho() / 2);
         int posSupBloque = bloque.posY() - (bloque.alto() / 2);
         int posInfBloque = bloque.posY() + (bloque.alto() / 2);
-        
+
         // Todas las posibles combinaciones de colisión bola-bloque
         if ((condColisionIzq(posDerBloque, bloque.posX()) ||
             condColisionDer(posIzqBloque, bloque.posX())) &&
             this.bola.posY() <= posInfBloque && this.bola.posY() >= posSupBloque) {
             // Choque lateral
-            this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
+            if (this.bola.verDireccion()[0] == 0.0) {
+                // Golpe en una esquina del bloque
+                this.bola.modificarDireccion(this.bola.verDireccion()[0], -this.bola.verDireccion()[1]);
+            } else {
+                this.bola.modificarDireccion(-this.bola.verDireccion()[0], this.bola.verDireccion()[1]);
+            }
             return true;
         } else if ((condColisionSup(posSupBloque, bloque.posY()) ||
             condColisionInf(posInfBloque, bloque.posY())) &&

@@ -49,11 +49,15 @@ Las pruebas son personalizables y no necesitan edición para ser ejecutadas. Se 
 
 Instrucciones para ejecutar el juego:
 
-La ubicación src/main contiene el archivo que debe compilarse y correrse para jugar, que es el archivo Main.java en java/algo3. Para Visual Studio Code la extensión utilizada para compilar es Debugger for Java, que está incluido en el Extension Pack. La carpeta resources tiene los recursos utilizados en la aplicación; el usuario puede crear sus propios niveles ubicándolos en su respectiva carpeta con un archivo con extensión .csv que sigue el siguiente patrón:
-Posición en X - posición en Y - vida - puntuación - color (RGB) - visibilidad.
+La ubicación src/main contiene el archivo que debe compilarse y correrse para jugar, que es el archivo Main.java en java/algo3. Para Visual Studio Code la extensión utilizada para compilar es Debugger for Java, que está incluido en el Extension Pack. La carpeta resources tiene los recursos utilizados en la aplicación.
 
 Los controles por defecto son:
 
 Flecha izquierda y flecha derecha - movimiento
 R - reinicio
 Barra espaciadora - iniciar juego
+
+Sobre los niveles:
+
+Para que el juego detecte los nuevos niveles es necesario modificar la constante global CANT_NIVELES en Breakout.java, acorde a la cantidad de archivos .csv que hay en el directorio. Los niveles están ordenados numéricamente de menor a mayor, por lo que para insertar un nuevo nivel hay que seguir este patrón. También se puede modificar el nivel en el cual se inicia el juego con la variable NIVEL_INI. Los niveles se crean escribiendo un archivo .csv en la carpeta niveles de la siguiente forma:
+Posición en X - posición en Y - vida - puntuación - color (RGB) - visibilidad.

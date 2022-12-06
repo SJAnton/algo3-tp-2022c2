@@ -7,7 +7,7 @@ public class Bola {
     private double velocidad;
     private double[] direccion;    
 
-    public Bola(double posX, double posY, int radio, int velocidad) {
+    public Bola(double posX, double posY, int radio, double velocidad) {
         this.posX = posX;
         this.posY = posY;
         this.radio = radio;

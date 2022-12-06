@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Breakout {
-    private final int CANT_NIVELES = 4; // cantidad de niveles en el directorio
+    private final int CANT_NIVELES = 3; // cantidad de niveles en el directorio
 
     private final int VIDA_INI = 3;
     private final int NIVEL_INI = 1;
     private final int VEL_PALETA = 8;
-    private final int VEL_BOLA_INI = 3;
+    private final double VEL_BOLA_INI = 3;
 
     private final int RADIO_BOLA = 5;
     private final int DIST_BOLA_PALETA = 20;
