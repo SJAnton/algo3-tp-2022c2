@@ -147,7 +147,7 @@ public class Colision {
         for (int i = 0; i < listaBloques.size(); i++) {
             Bloque objBloque = listaBloques.get(i);
 
-            if (objBloque.getClass() == BloqueComun.class) {
+            if (!objBloque.esInvisible()) {
                 // El objeto golpeado es un bloque común
                 BloqueComun bloque = (BloqueComun)objBloque;
 
@@ -171,7 +171,7 @@ public class Colision {
                 this.cambiosVelocidad();
                 breakout.subirPuntuacion(bloque.puntuacion());
 
-            } else if (objBloque.getClass() == BloqueInvisible.class) {
+            } else if (objBloque.esInvisible()) {
                 // El objeto golpeado es un bloque invisible
                 BloqueInvisible bloqueInv = (BloqueInvisible)objBloque;
 

@@ -1,5 +1,7 @@
 package algo3;
 
+import javafx.scene.paint.Color;
+
 public class BloqueComun implements Bloque {
     private final int posX;
     private final int posY;
@@ -8,11 +10,11 @@ public class BloqueComun implements Bloque {
     private final int ANCHO = 40;
     
     private final int puntuacion;
-    private final int[] color;
+    private final Color color;
 
     private int vida;
 
-    public BloqueComun(int posX, int posY, int vida, int puntuacion, int[] color) {
+    public BloqueComun(int posX, int posY, int vida, int puntuacion, Color color) {
         this.posX = posX;
         this.posY = posY;
         this.color = color;
@@ -47,11 +49,16 @@ public class BloqueComun implements Bloque {
         return this.puntuacion;
     }
 
-    public int[] color() {
+    public Color color() {
         return this.color;
     }
 
     public boolean estado() {
         return this.vida != 0;
+    }
+
+    @Override
+    public boolean esInvisible() {
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package algo3;
 
+import javafx.scene.paint.Color;
+
 public class BloqueInvisible implements Bloque {
     private final int posX;
     private final int posY;
@@ -8,12 +10,12 @@ public class BloqueInvisible implements Bloque {
     private final int ANCHO = 40;
 
     private final int puntuacion;
-    private final int[] color;
+    private final Color color;
 
     private int vida;
     private boolean invisible;
     
-    public BloqueInvisible(int posX, int posY, int vida, int puntuacion, int[] color) {        
+    public BloqueInvisible(int posX, int posY, int vida, int puntuacion, Color color) {        
         this.posX = posX;
         this.posY = posY;
         this.color = color;
@@ -57,10 +59,11 @@ public class BloqueInvisible implements Bloque {
         return this.puntuacion;
     }
 
+    @Override
     public boolean esInvisible() {
         return this.invisible;
     }
-
+ 
     @Override
     public boolean estado() {
         return false;

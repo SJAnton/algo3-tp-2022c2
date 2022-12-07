@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.media.MediaPlayer;
 import javafx.application.Application;
@@ -93,8 +94,8 @@ public class BreakoutApp extends Application {
     }
 
     private void dibujarBloques(GraphicsContext gc, FabricaDeBloques fabrica) {
-        for (Object objBloque : fabrica.listaBloques()) {
-            if (objBloque.getClass() == BloqueInvisible.class) {
+        for (Bloque objBloque : fabrica.listaBloques()) {
+            if (objBloque.esInvisible()) {
                 continue;
             }
             BloqueComun bloque = (BloqueComun)objBloque;
@@ -102,16 +103,12 @@ public class BreakoutApp extends Application {
             int posX = bloque.posX() - bloque.ancho() / 2;
             int posY = bloque.posY() - bloque.alto() / 2;
 
-            int r = bloque.color()[0];
-            int g = bloque.color()[1];
-            int b = bloque.color()[2];
-
-            gc.setFill(Color.rgb(r, g, b));
+            gc.setFill(bloque.color());
             gc.fillRect(posX, posY, bloque.ancho(), bloque.alto());
         }
     }
-
-    private void dibujarPuntuacion(GraphicsContext gc, Breakout breakout) {
+    
+    private void dibujarPuntuacion(GraphicsContext gc, Breakout breakout) throws MediaException {
         String vida = Integer.toString(breakout.vida());
         String puntuacion = Integer.toString(breakout.puntuacion());
 

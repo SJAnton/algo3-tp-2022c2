@@ -14,4 +14,6 @@ public interface Bloque {
     public int puntuacion();
 
     public boolean estado();
+
+    public boolean esInvisible();
 }

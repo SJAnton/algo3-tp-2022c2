@@ -123,7 +123,7 @@ public class ColisionBolaBloqueTest {
         for (int i = 0; i < listaBloques.size(); i++) {
             // Busca el bloque invisible a destruir más cercano verticalmente
 
-            if (listaBloques.get(i).getClass() == BloqueComun.class) {
+            if (!listaBloques.get(i).esInvisible()) {
                 continue;
             }
             BloqueInvisible bloqueInvActual = (BloqueInvisible)listaBloques.get(i);

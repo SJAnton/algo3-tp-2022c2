@@ -50,7 +50,7 @@ public class ColisionBolaPaletaTest {
             bola.actualizarMovimiento();
             colision.colisionBolaPaleta(null, paleta);
         }
-        double dirXRebote = -0.5;
+        double dirXRebote = -1.0;
 
         assertEquals(dirXRebote, bola.verDireccion()[0], 0.1);
         assertEquals(-dirY, bola.verDireccion()[1], 0.1);
@@ -66,7 +66,7 @@ public class ColisionBolaPaletaTest {
             bola2.actualizarMovimiento();
             colision2.colisionBolaPaleta(null, paleta);
         }
-        dirXRebote = 0.5;
+        dirXRebote = 1.0;
 
         assertEquals(dirXRebote, bola2.verDireccion()[0], 0.1);
         assertEquals(-dirY, bola2.verDireccion()[1], 0.1);

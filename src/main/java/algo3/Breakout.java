@@ -5,9 +5,9 @@ import java.util.Random;
 
 public class Breakout {
     private final int CANT_NIVELES = 3; // cantidad de niveles en el directorio
+    private final int NIVEL_INI = 1;
 
     private final int VIDA_INI = 3;
-    private final int NIVEL_INI = 1;
     private final int VEL_PALETA = 8;
     private final double VEL_BOLA_INI = 3;
 
