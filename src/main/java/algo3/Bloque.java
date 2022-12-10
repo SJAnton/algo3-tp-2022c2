@@ -13,7 +13,11 @@ public interface Bloque {
 
     public int puntuacion();
 
+    public Color color();
+
     public boolean estado();
 
     public boolean esInvisible();
+
+    public Bloque reemplazarBloque();
 }

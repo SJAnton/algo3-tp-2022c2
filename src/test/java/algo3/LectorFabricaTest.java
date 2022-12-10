@@ -44,7 +44,7 @@ public class LectorFabricaTest {
         assertEquals(lineas.size(), listaBloques.size());
 
         for (int i = 0; i < listaBloques.size(); i++) {
-            BloqueComun bloque = (BloqueComun)listaBloques.get(i);
+            Bloque bloque = listaBloques.get(i);
 
             String[] linea = lineas.get(i);
 

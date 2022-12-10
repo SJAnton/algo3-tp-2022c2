@@ -3,8 +3,6 @@ package algo3;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.scene.paint.Color;
-
 public class FabricaDeBloques {
     private ArrayList<Bloque> bloques;
     private ArrayList<String[]> datosBloques;
@@ -27,15 +25,15 @@ public class FabricaDeBloques {
             int g = Integer.parseInt(datosColor[1]);
             int b = Integer.parseInt(datosColor[2]);
 
-            Color color = Color.rgb(r, g, b);
+            Color color = new Color(r, g, b);
 
             switch (this.datosBloques.get(i)[5]) {
                 case "visible":
-                    BloqueComun bloque = new BloqueComun(posX, posY, vida, puntuacion, color);
+                    Bloque bloque = new BloqueComun(posX, posY, vida, puntuacion, color);
                     this.bloques.add(bloque);
                     break;
                 case "invisible":
-                    BloqueInvisible bloqueInvisible = new BloqueInvisible(posX, posY, vida, puntuacion, color);
+                    Bloque bloqueInvisible = new BloqueInvisible(posX, posY, vida, puntuacion, color);
                     this.bloques.add(bloqueInvisible);
                     break;
             }

@@ -145,11 +145,10 @@ public class Colision {
             return;
         }
         for (int i = 0; i < listaBloques.size(); i++) {
-            Bloque objBloque = listaBloques.get(i);
+            Bloque bloque = listaBloques.get(i);
 
-            if (!objBloque.esInvisible()) {
+            if (!bloque.esInvisible()) {
                 // El objeto golpeado es un bloque común
-                BloqueComun bloque = (BloqueComun)objBloque;
 
                 if (!contactoBolaBloque(bloque)) {
                     continue;
@@ -171,16 +170,15 @@ public class Colision {
                 this.cambiosVelocidad();
                 breakout.subirPuntuacion(bloque.puntuacion());
 
-            } else if (objBloque.esInvisible()) {
+            } else if (bloque.esInvisible()) {
                 // El objeto golpeado es un bloque invisible
-                BloqueInvisible bloqueInv = (BloqueInvisible)objBloque;
 
-                if (!contactoBolaBloque(bloqueInv)){
+                if (!contactoBolaBloque(bloque)){
                     continue;
                 }
-                bloqueInv.golpear();
+                bloque.golpear();
                 BreakoutApp.reproducirSonido(breakout, "golpeBloque");
-                listaBloques.set(i, bloqueInv.reemplazarBloque());
+                listaBloques.set(i, bloque.reemplazarBloque());
             }
         }
     }

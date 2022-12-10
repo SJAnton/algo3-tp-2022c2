@@ -1,7 +1,5 @@
 package algo3;
 
-import javafx.scene.paint.Color;
-
 public class BloqueComun implements Bloque {
     private final int posX;
     private final int posY;
@@ -60,5 +58,10 @@ public class BloqueComun implements Bloque {
     @Override
     public boolean esInvisible() {
         return false;
+    }
+
+    @Override
+    public Bloque reemplazarBloque() {
+        return null;
     }
 }

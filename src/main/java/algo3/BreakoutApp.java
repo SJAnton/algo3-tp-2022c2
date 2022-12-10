@@ -94,16 +94,18 @@ public class BreakoutApp extends Application {
     }
 
     private void dibujarBloques(GraphicsContext gc, FabricaDeBloques fabrica) {
-        for (Bloque objBloque : fabrica.listaBloques()) {
-            if (objBloque.esInvisible()) {
+        for (Bloque bloque : fabrica.listaBloques()) {
+            if (bloque.esInvisible()) {
                 continue;
             }
-            BloqueComun bloque = (BloqueComun)objBloque;
-
             int posX = bloque.posX() - bloque.ancho() / 2;
             int posY = bloque.posY() - bloque.alto() / 2;
 
-            gc.setFill(bloque.color());
+            int r = bloque.color().r();
+            int g = bloque.color().g();
+            int b = bloque.color().b();
+
+            gc.setFill(Color.rgb(r, g, b));
             gc.fillRect(posX, posY, bloque.ancho(), bloque.alto());
         }
     }

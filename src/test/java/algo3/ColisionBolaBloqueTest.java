@@ -59,13 +59,13 @@ public class ColisionBolaBloqueTest {
         double dirX = 0.0;
         double dirY = -1.0;
 
-        BloqueComun bloque = null;
+        Bloque bloque = null;
 
         int menorDist = 0;
 
         for (int i = 0; i < listaBloques.size(); i++) {
             // Busca el bloque a destruir más cercano verticalmente
-            BloqueComun bloqueActual = (BloqueComun)listaBloques.get(i);
+            Bloque bloqueActual = listaBloques.get(i);
 
             int bordeIzqBloque = bloqueActual.posX() - (bloqueActual.ancho() / 2);
             int bordeDerBloque = bloqueActual.posX() + (bloqueActual.ancho() / 2);
@@ -116,9 +116,8 @@ public class ColisionBolaBloqueTest {
         double dirX = 0.0;
         double dirY = 1.0;
 
-        BloqueInvisible bloqueInv = null;
+        Bloque bloqueInv = null;
         int menorDist = ALTO_PANTALLA;
-        int indiceMenorDist = 0;
 
         for (int i = 0; i < listaBloques.size(); i++) {
             // Busca el bloque invisible a destruir más cercano verticalmente
@@ -126,15 +125,14 @@ public class ColisionBolaBloqueTest {
             if (!listaBloques.get(i).esInvisible()) {
                 continue;
             }
-            BloqueInvisible bloqueInvActual = (BloqueInvisible)listaBloques.get(i);
+            Bloque bloqueInvActual = listaBloques.get(i);
 
             int bordeIzqBloque = bloqueInvActual.posX() - (bloqueInvActual.ancho() / 2);
             int bordeDerBloque = bloqueInvActual.posX() + (bloqueInvActual.ancho() / 2);
 
             if (POS_X <= bordeDerBloque && POS_X >= bordeIzqBloque && bloqueInvActual.posY() < menorDist) {
-                indiceMenorDist = i;
                 menorDist = bloqueInvActual.posY();
-                bloqueInv = (BloqueInvisible)bloqueInvActual;
+                bloqueInv = bloqueInvActual;
             }
         }
         assertNotEquals(bloqueInv, null);
@@ -149,6 +147,6 @@ public class ColisionBolaBloqueTest {
             colision.colisionBolaBloque(null, fabrica);
         }
         // Verifica que el objeto BloqueInvisible se convirtió en Bloque
-        assertEquals(BloqueComun.class, listaBloques.get(indiceMenorDist).getClass());        
+        assertEquals(!bloqueInv.esInvisible(), true);        
     }
 }
